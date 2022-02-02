@@ -2,11 +2,13 @@ package gym.model;
 
 import javax.persistence.*;
 
+import lombok.Data;
+
 @Entity
-public class Rol {
+@Data
+public class Role {
     public static final Long ADMINISTRADOR_ID = 1L;
     public static final Long CLIENTE_ID = 2L;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

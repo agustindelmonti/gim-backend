@@ -1,0 +1,12 @@
+spring.datasource.url=url
+spring.datasource.username=username
+spring.datasource.password=password
+spring.datasource.driver-class-name=driver
+
+spring.jpa.database-platform = dialect
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto = update
+
+spring.security.user.name=admin
+spring.security.user.password=admin
+spring.security.user.roles=admin

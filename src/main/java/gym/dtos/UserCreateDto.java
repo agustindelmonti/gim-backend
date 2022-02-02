@@ -1,13 +1,13 @@
 package gym.dtos;
 
 import gym.model.User;
-import org.hibernate.annotations.Type;
-import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.*;
 
 public class UserCreateDto {
+
     @NotBlank
+    @Email
     public String email;
 
     @NotBlank

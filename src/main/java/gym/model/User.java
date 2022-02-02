@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
+@Data
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,5 +21,5 @@ public class User {
 	public String nroDoc;
 
 	@ManyToOne(optional = false)
-	public Rol rol;
+	public Role rol;
 }

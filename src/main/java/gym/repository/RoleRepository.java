@@ -1,10 +1,10 @@
 package gym.repository;
 
-import gym.model.Rol;
+import gym.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RolRepository extends JpaRepository<Rol, Long> {
-    Rol findById(long id);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Role findById(long id);
 }
