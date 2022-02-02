@@ -1,32 +1,32 @@
 package gym.dtos;
 
 import gym.model.User;
+import lombok.Data;
 
 import javax.validation.constraints.*;
 
+@Data
 public class UserCreateDto {
 
     @NotBlank
     @Email
-    public String email;
+    private String email;
 
     @NotBlank
-    public String password;
+    private String password;
 
     @NotBlank
-    public String nroDoc;
+    private String nroDoc;
 
     @Positive
     @NotNull
-    public Long rolId;
+    private Long rolId;
 
     public User toUser() {
         User user = new User();
-
-        user.email = this.email;
-        user.password = this.password;
-        user.nroDoc = this.nroDoc;
-
+        user.setEmail(this.email);
+        user.setPassword(this.password);
+        user.setNroDoc(this.nroDoc);
         return user;
     }
 }

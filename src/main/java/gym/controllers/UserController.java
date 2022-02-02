@@ -35,7 +35,7 @@ public class UserController {
         final User user = userService.createCliente(userDto);
 
         URI uri = URI.create(
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("api/users/" + user.id).toUriString());
+                ServletUriComponentsBuilder.fromCurrentContextPath().path("api/users/" + user.getId()).toUriString());
         return ResponseEntity.created(uri).body(user);
     }
 }

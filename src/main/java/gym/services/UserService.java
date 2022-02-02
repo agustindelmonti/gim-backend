@@ -34,18 +34,18 @@ public class UserService implements IUserService, UserDetailsService {
     PasswordEncoder passwordEncoder;
 
     public User createCliente(UserCreateDto userDto) throws BusinessException {
-        if (userRepository.existsByEmail(userDto.email)) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
             throw new BusinessException("Email en uso");
         }
 
-        if (userRepository.existsByNroDoc(userDto.nroDoc)) {
+        if (userRepository.existsByNroDoc(userDto.getNroDoc())) {
             throw new BusinessException("Nro Documento en uso");
         }
 
         User user = userDto.toUser();
 
-        user.setPassword(passwordEncoder.encode(user.password));
-        final Role role = roleRepository.findById(userDto.rolId).orElseThrow();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        final Role role = roleRepository.findById(userDto.getRolId()).orElseThrow();
         user.getRoles().add(role);
 
         final User created = userRepository.save(user);
@@ -68,7 +68,7 @@ public class UserService implements IUserService, UserDetailsService {
         }
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(r -> authorities.add(new SimpleGrantedAuthority(r.name)));
+        user.getRoles().forEach(r -> authorities.add(new SimpleGrantedAuthority(r.getName())));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 

@@ -14,17 +14,17 @@ import javax.persistence.*;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long id;
+	private Long id;
 
 	@Column(nullable = false, unique = true)
-	public String email;
+	private String email;
 
 	@Column(nullable = false)
-	public String password;
+	private String password;
 
 	@Column(nullable = false, unique = true)
-	public String nroDoc;
+	private String nroDoc;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	public Collection<Role> roles = new ArrayList<>();
+	private Collection<Role> roles = new ArrayList<>();
 }
