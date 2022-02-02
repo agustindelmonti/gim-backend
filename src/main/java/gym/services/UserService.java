@@ -16,6 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,9 @@ public class UserService implements IUserService, UserDetailsService {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     public User createCliente(UserCreateDto userDto) throws BusinessException {
         if (userRepository.existsByEmail(userDto.email)) {
             throw new BusinessException("Email en uso");
@@ -40,8 +44,9 @@ public class UserService implements IUserService, UserDetailsService {
 
         User user = userDto.toUser();
 
+        user.setPassword(passwordEncoder.encode(user.password));
         final Role role = roleRepository.findById(userDto.rolId).orElseThrow();
-        user.roles.add(role);
+        user.getRoles().add(role);
 
         final User created = userRepository.save(user);
         return created;
