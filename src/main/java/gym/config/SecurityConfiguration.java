@@ -2,6 +2,7 @@ package gym.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,10 +21,11 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder bCryptPasswordEncoder;
+    private final Environment env;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        var customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
+        var customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(), env);
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
 
         http.csrf().disable();

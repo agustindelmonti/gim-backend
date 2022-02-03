@@ -14,7 +14,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,13 +25,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
+    private final Environment env;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, Environment env) {
         this.authenticationManager = authenticationManager;
+        this.env = env;
     }
-
-    @Autowired
-    private Environment env;
 
     /**
      * Se ejecuta siempre que un usuario intente autenticarse
@@ -51,7 +49,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             Authentication authResult) throws IOException, ServletException {
 
         User user = (User) authResult.getPrincipal();
-        String secret = env.getProperty("secret");
+        String secret = env.getProperty("HMAC.secret");
         Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
 
         String access_token = JWT.create()
