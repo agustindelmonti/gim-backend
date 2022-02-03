@@ -6,13 +6,9 @@ import gym.model.User;
 import gym.repository.RoleRepository;
 import gym.repository.UserRepository;
 import gym.utils.BusinessException;
-import lombok.extern.slf4j.Slf4j;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@Slf4j
 public class UserService implements IUserService, UserDetailsService {
     @Autowired
     UserRepository userRepository;
@@ -63,13 +58,9 @@ public class UserService implements IUserService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final User user = userRepository.findByEmail(username);
         if (user == null) {
-            log.error("No se encontró un usuario registrado con email {}", username);
-            throw new UsernameNotFoundException("No se encontró un usuario registrado");
+            throw new UsernameNotFoundException(username);
         }
-
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(r -> authorities.add(new SimpleGrantedAuthority(r.getName())));
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+        return user;
     }
 
 }

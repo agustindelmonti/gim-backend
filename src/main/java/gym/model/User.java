@@ -8,10 +8,14 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Entity
 @Data
 @NoArgsConstructor
-public class User {
+public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -27,4 +31,19 @@ public class User {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<Role> roles = new ArrayList<>();
+
+	private boolean enabled;
+	private boolean credentialsNonExpired;
+	private boolean accountNonExpired;
+	private boolean accountNonLocked;
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).toList();
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
 }
