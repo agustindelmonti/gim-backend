@@ -49,7 +49,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             Authentication authResult) throws IOException, ServletException {
 
         User user = (User) authResult.getPrincipal();
-        String secret = env.getProperty("HMAC.secret");
+        String secret = env.getProperty("application.jwt.secret");
         Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
 
         String access_token = JWT.create()

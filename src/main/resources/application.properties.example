@@ -11,5 +11,7 @@ spring.security.user.name=admin
 spring.security.user.password=admin
 spring.security.user.roles=admin
 
-#HMAC hashing secret for passwords 
-HMAC.secret=secret
+#jwt configuration 
+application.jwt.secret=secret
+application.jwt.token.prefix=Bearer
+application.jwt.token.expiration=14
