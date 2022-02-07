@@ -10,3 +10,8 @@ spring.jpa.hibernate.ddl-auto = update
 spring.security.user.name=admin
 spring.security.user.password=admin
 spring.security.user.roles=admin
+
+#jwt configuration 
+application.jwt.secret=secret
+application.jwt.token.prefix=Bearer
+application.jwt.token.expiration=14
