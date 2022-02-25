@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -45,10 +46,15 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-            Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain chain,
+            Authentication authResult)
+            throws IOException {
 
-        User user = (User) authResult.getPrincipal();
+        UserDetails user = (UserDetails) authResult.getPrincipal();
+
         String secret = env.getProperty("application.jwt.secret");
         Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
 
