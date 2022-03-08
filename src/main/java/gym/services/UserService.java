@@ -28,7 +28,7 @@ public class UserService implements IUserService, UserDetailsService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public User createCliente(UserCreateDto userDto) throws BusinessException {
+    public User createUser(UserCreateDto userDto) throws BusinessException {
         if (userRepository.existsByEmail(userDto.getEmail())) {
             throw new BusinessException("Email en uso");
         }
@@ -40,11 +40,11 @@ public class UserService implements IUserService, UserDetailsService {
         User user = userDto.toUser();
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         final Role role = roleRepository.findById(userDto.getRolId()).orElseThrow();
         user.getRoles().add(role);
 
-        final User created = userRepository.save(user);
-        return created;
+        return userRepository.save(user);
     }
 
     @Override

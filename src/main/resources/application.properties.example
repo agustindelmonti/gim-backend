@@ -7,11 +7,14 @@ spring.jpa.database-platform = dialect
 spring.jpa.generate-ddl=true
 spring.jpa.hibernate.ddl-auto = update
 
-spring.security.user.name=admin
-spring.security.user.password=admin
-spring.security.user.roles=admin
 
-#jwt configuration 
+server.contextPath=/api/*
+
+# Application
 application.jwt.secret=secret
 application.jwt.token.prefix=Bearer
 application.jwt.token.expiration=14
+
+application.admin.email = admin@gmail.com
+application.admin.password = password
+application.admin.dni = 40100200

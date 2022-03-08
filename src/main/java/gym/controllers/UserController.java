@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<User> createCliente(@RequestBody @Validated UserCreateDto userDto) throws BusinessException {
-        final User user = userService.createCliente(userDto);
+    public ResponseEntity<User> createUser(@RequestBody @Validated UserCreateDto userDto) throws BusinessException {
+        final User user = userService.createUser(userDto);
 
         URI uri = URI.create(
                 ServletUriComponentsBuilder.fromCurrentContextPath().path("api/users/" + user.getId()).toUriString());
