@@ -7,6 +7,13 @@ import javax.validation.constraints.*;
 
 @Data
 public class UserCreateDto {
+    public UserCreateDto(String email, String password, String nroDoc, Long rolId) {
+        this.email = email;
+        this.password = password;
+        this.nroDoc = nroDoc;
+        this.rolId = rolId;
+    }
+
 
     @NotBlank
     @Email
