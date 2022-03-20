@@ -18,11 +18,8 @@ public class Role {
     public static final Long USER_ID = 2L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
     private String name;
-
-
 }
