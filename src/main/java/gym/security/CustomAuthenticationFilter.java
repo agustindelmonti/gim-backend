@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +15,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gym.dtos.AuthDto;
+import lombok.AllArgsConstructor;
+
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -24,22 +29,25 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@AllArgsConstructor
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final Environment env;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, Environment env) {
-        this.authenticationManager = authenticationManager;
-        this.env = env;
-    }
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        var token = new UsernamePasswordAuthenticationToken(username, password);
-        return authenticationManager.authenticate(token);
+
+        try {
+            String sb = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            ObjectMapper mapper = new ObjectMapper();
+            AuthDto auth = mapper.readValue(sb, AuthDto.class);
+            var token = new UsernamePasswordAuthenticationToken(auth.getUsername(), auth.getPassword());
+            return authenticationManager.authenticate(token);
+
+        } catch(Exception e){
+            throw new InternalAuthenticationServiceException("Bad request");
+        }
     }
 
     @Override
