@@ -10,10 +10,9 @@ import javax.persistence.*;
 @Setter
 public class MuscleGroup {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @Column(nullable = false)
     public String name;
-
-
 }
