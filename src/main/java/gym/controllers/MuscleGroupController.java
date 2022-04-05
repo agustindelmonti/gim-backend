@@ -1,11 +1,13 @@
 package gym.controllers;
 
+import gym.dtos.MuscleGroupCreateDto;
 import gym.model.MuscleGroup;
 import gym.services.MuscleGroupService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController()
@@ -21,14 +23,14 @@ public class MuscleGroupController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MuscleGroup create(@RequestBody MuscleGroup muscleGroup) {
-        return muscleGroupService.create(muscleGroup);
+    public MuscleGroup create(@RequestBody @Valid MuscleGroupCreateDto muscleGroupCreateDto) {
+        return muscleGroupService.create(muscleGroupCreateDto);
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public MuscleGroup update(@PathVariable("id") Long id, @RequestBody MuscleGroup muscleGroup) {
-        return muscleGroupService.update(id, muscleGroup);
+    public MuscleGroup update(@PathVariable("id") Long id, @RequestBody @Valid MuscleGroupCreateDto muscleGroupCreateDto) {
+        return muscleGroupService.update(id, muscleGroupCreateDto);
     }
 
     @DeleteMapping(value = "/{id}")
