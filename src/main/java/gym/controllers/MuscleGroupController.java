@@ -1,6 +1,6 @@
 package gym.controllers;
 
-import gym.dtos.MuscleGroupCreateDto;
+import gym.dtos.MuscleGroupDto;
 import gym.model.MuscleGroup;
 import gym.services.MuscleGroupService;
 import lombok.AllArgsConstructor;
@@ -17,20 +17,25 @@ public class MuscleGroupController {
     private MuscleGroupService muscleGroupService;
 
     @GetMapping
-    public List<MuscleGroup> getMuscleGroups() {
-        return muscleGroupService.getMuscleGroups();
+    public List<MuscleGroup> getAll() {
+        return muscleGroupService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public MuscleGroup getOne(@PathVariable("id") Long id) {
+        return muscleGroupService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MuscleGroup create(@RequestBody @Valid MuscleGroupCreateDto muscleGroupCreateDto) {
-        return muscleGroupService.create(muscleGroupCreateDto);
+    public MuscleGroup create(@RequestBody @Valid MuscleGroupDto muscleGroupDto) {
+        return muscleGroupService.create(muscleGroupDto);
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public MuscleGroup update(@PathVariable("id") Long id, @RequestBody @Valid MuscleGroupCreateDto muscleGroupCreateDto) {
-        return muscleGroupService.update(id, muscleGroupCreateDto);
+    public MuscleGroup update(@PathVariable("id") Long id, @RequestBody @Valid MuscleGroupDto muscleGroupDto) {
+        return muscleGroupService.update(id, muscleGroupDto);
     }
 
     @DeleteMapping(value = "/{id}")

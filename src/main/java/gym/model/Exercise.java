@@ -11,9 +11,10 @@ import java.util.Set;
 @Setter
 public class Exercise {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     public String name;
 
     @ManyToMany()

@@ -1,6 +1,6 @@
 package gym.services;
 
-import gym.dtos.MuscleGroupCreateDto;
+import gym.dtos.MuscleGroupDto;
 import gym.model.MuscleGroup;
 import gym.repository.MuscleGroupRepository;
 import lombok.AllArgsConstructor;
@@ -17,20 +17,20 @@ public class MuscleGroupService {
         return muscleGroupRepository.findById(id).orElseThrow();
     }
 
-    public List<MuscleGroup> getMuscleGroups() {
+    public List<MuscleGroup> getAll() {
         return muscleGroupRepository.findAll();
     }
 
-    public MuscleGroup create(MuscleGroupCreateDto muscleGroupCreateDto) {
-        return muscleGroupRepository.save(muscleGroupCreateDto.toMuscleGroup());
+    public MuscleGroup create(MuscleGroupDto muscleGroupDto) {
+        return muscleGroupRepository.save(muscleGroupDto.toMuscleGroup());
     }
 
-    public MuscleGroup update(Long id, MuscleGroupCreateDto muscleGroupCreateDto) {
-        MuscleGroup existingMuscleGroup = this.getById(id);
+    public MuscleGroup update(Long id, MuscleGroupDto muscleGroupDto) {
+        MuscleGroup muscleGroup = this.getById(id);
 
-        existingMuscleGroup.name = muscleGroupCreateDto.name;
+        muscleGroup.name = muscleGroupDto.name;
 
-        return muscleGroupRepository.save(existingMuscleGroup);
+        return muscleGroupRepository.save(muscleGroup);
     }
 
     public void delete(Long id) {

@@ -1,11 +1,13 @@
 package gym.controllers;
 
+import gym.dtos.ExerciseDto;
 import gym.model.Exercise;
 import gym.services.ExerciseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController()
@@ -15,24 +17,22 @@ public class ExerciseController {
     private ExerciseService exerciseService;
 
     @GetMapping
-    public List<Exercise> findAll() {
-        return exerciseService.findAll();
+    public List<Exercise> getExercises() {
+        return exerciseService.getExercises();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Exercise create(@RequestBody Exercise exercise) {
-        return exerciseService.create(exercise);
+    public Exercise create(@RequestBody @Valid ExerciseDto exerciseDto) {
+        return exerciseService.create(exerciseDto);
     }
 
     @PutMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Exercise update(@PathVariable("id") Long id, @RequestBody Exercise exercise) {
-        return exerciseService.update(id, exercise);
+    public Exercise update(@PathVariable("id") Long id, @RequestBody @Valid ExerciseDto exerciseDto) {
+        return exerciseService.update(id, exerciseDto);
     }
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("id") Long id) {
         exerciseService.delete(id);
     }
