@@ -1,19 +1,21 @@
 package gym.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Entity
-@Table(name="roles")
-@Data
+@Table(name = "roles")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role {
-    public static final Long ADMINISTRADOR_ID = 1L;
-    public static final Long CLIENTE_ID = 2L;
+    public static final Long ADMIN_ID = 1L;
+    public static final Long USER_ID = 2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

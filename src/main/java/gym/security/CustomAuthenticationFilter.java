@@ -1,23 +1,10 @@
 package gym.security;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gym.dtos.AuthDto;
 import lombok.AllArgsConstructor;
-
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +16,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
@@ -37,17 +34,17 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-
+        AuthDto auth;
         try {
             String sb = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             ObjectMapper mapper = new ObjectMapper();
-            AuthDto auth = mapper.readValue(sb, AuthDto.class);
-            var token = new UsernamePasswordAuthenticationToken(auth.getUsername(), auth.getPassword());
-            return authenticationManager.authenticate(token);
-
-        } catch(Exception e){
+            auth = mapper.readValue(sb, AuthDto.class);
+        } catch (Exception e) {
             throw new InternalAuthenticationServiceException("Bad request");
         }
+
+        var token = new UsernamePasswordAuthenticationToken(auth.getUsername(), auth.getPassword());
+        return authenticationManager.authenticate(token);
     }
 
     @Override

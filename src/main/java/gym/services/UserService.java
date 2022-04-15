@@ -6,8 +6,7 @@ import gym.model.User;
 import gym.repository.RoleRepository;
 import gym.repository.UserRepository;
 import gym.utils.BusinessException;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,15 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class UserService implements IUserService, UserDetailsService {
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User createUser(UserCreateDto userDto) throws BusinessException {
         if (userRepository.existsByEmail(userDto.getEmail())) {

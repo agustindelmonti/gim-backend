@@ -2,18 +2,18 @@ package gym.seeders;
 
 import gym.model.Role;
 import gym.services.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class RolesSeeder implements CommandLineRunner {
-    @Autowired
-    RoleService roleService;
+    private RoleService roleService;
 
     @Override
-    public void run(String... args) throws Exception {
-        roleService.saveRole(new Role(Role.ADMINISTRADOR_ID, "Administrador"));
-        roleService.saveRole(new Role(Role.CLIENTE_ID, "Cliente"));
+    public void run(String... args) {
+        roleService.saveRole(new Role(Role.ADMIN_ID, "Admin"));
+        roleService.saveRole(new Role(Role.USER_ID, "User"));
     }
 }
