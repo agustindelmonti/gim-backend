@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -26,6 +28,7 @@ import java.util.Collection;
 @AllArgsConstructor
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     private Environment env;
+    private UserDetailsService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -50,7 +53,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     Collection<String> roles = decodedJWT.getClaim("roles").asList(String.class);
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     roles.forEach(r -> authorities.add(new SimpleGrantedAuthority(r)));
-                    var authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+
+                    UserDetails userDetails = userService.loadUserByUsername(username);
+                    var authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 } catch (Exception e) {
                     log.error("Error tratando de autorizar jwt {}", e.getMessage());
