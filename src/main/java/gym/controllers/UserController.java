@@ -8,6 +8,7 @@ import gym.services.UserService;
 import gym.utils.BusinessException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +25,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok().body(userRepository.findAll());
+    @Secured("ROLE_ADMIN")
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
     @GetMapping("/me")
-    public UserProfileDto get(@AuthenticationPrincipal User user) {
+    public UserProfileDto me(@AuthenticationPrincipal User user) {
         return new UserProfileDto(user);
     }
 
