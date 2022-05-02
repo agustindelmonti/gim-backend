@@ -21,6 +21,11 @@ public class ExerciseController {
         return exerciseService.getExercises();
     }
 
+    @GetMapping("/{id}")
+    public Exercise getOne(@PathVariable("id") Long id) {
+        return exerciseService.getById(id);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Exercise create(@RequestBody @Valid ExerciseDto exerciseDto) {
