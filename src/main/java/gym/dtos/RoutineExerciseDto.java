@@ -8,6 +8,9 @@ import javax.validation.constraints.Min;
 
 @Data
 public class RoutineExerciseDto {
+    public Long routineId;
+    public Long exerciseId;
+
     @Min(1)
     @Max(7)
     public int day;

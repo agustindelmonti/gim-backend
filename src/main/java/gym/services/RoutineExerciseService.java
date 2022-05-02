@@ -16,29 +16,32 @@ public class RoutineExerciseService {
     private RoutineService routineService;
     private ExerciseService exerciseService;
 
-    public List<RoutineExercise> getAllByRoutine(Long routineId) {
-        return routineExerciseRepository.getByRoutineId(routineId);
+    public List<RoutineExercise> getRoutineExercises() {
+        return routineExerciseRepository.findAll();
     }
 
-    public RoutineExercise getOne(Long routineId, Long exerciseId) {
-        return routineExerciseRepository.getByRoutineIdAndExerciseId(routineId, exerciseId);
+    public RoutineExercise getById(Long routineExerciseId) {
+        return routineExerciseRepository.findById(routineExerciseId).orElseThrow();
     }
 
-    public RoutineExercise create(Long routineId, Long exerciseId, RoutineExerciseDto routineExerciseDto) {
+    public RoutineExercise create(RoutineExerciseDto routineExerciseDto) {
         RoutineExercise routineExercise = routineExerciseDto.toRoutineExercise();
 
-        routineExercise.routine = routineService.getById(routineId);
-        routineExercise.exercise = exerciseService.getById(exerciseId);
+        routineExercise.routine = routineService.getById(routineExerciseDto.routineId);
+        routineExercise.exercise = exerciseService.getById(routineExerciseDto.exerciseId);
 
         return this.routineExerciseRepository.save(routineExercise);
     }
 
-    public RoutineExercise update(Long routineId, Long exerciseId, RoutineExerciseDto routineExerciseDto) {
-        RoutineExercise routineExercise = this.getOne(routineId, exerciseId);
+    public RoutineExercise update(Long routineExerciseId, RoutineExerciseDto routineExerciseDto) {
+        RoutineExercise routineExercise = this.getById(routineExerciseId);
 
         routineExercise.day = routineExerciseDto.day;
         routineExercise.sets = routineExerciseDto.sets;
         routineExercise.reps = routineExerciseDto.reps;
+
+        routineExercise.routine = routineService.getById(routineExerciseDto.routineId);
+        routineExercise.exercise = exerciseService.getById(routineExerciseDto.exerciseId);
 
         return routineExerciseRepository.save(routineExercise);
     }

@@ -22,7 +22,7 @@ public class MuscleGroupController {
     }
 
     @GetMapping("/{id}")
-    public MuscleGroup getOne(@PathVariable("id") Long id) {
+    public MuscleGroup getById(@PathVariable("id") Long id) {
         return muscleGroupService.getById(id);
     }
 

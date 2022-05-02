@@ -22,7 +22,7 @@ public class ExerciseController {
     }
 
     @GetMapping("/{id}")
-    public Exercise getOne(@PathVariable("id") Long id) {
+    public Exercise getById(@PathVariable("id") Long id) {
         return exerciseService.getById(id);
     }
 
