@@ -34,6 +34,9 @@ public class User implements UserDetails {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<Role> roles = new ArrayList<>();
 
+	@ManyToOne
+	private Routine routine;
+
 	@Column(nullable = false)
 	private boolean enabled;
 	private boolean credentialsNonExpired;

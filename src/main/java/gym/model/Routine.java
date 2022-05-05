@@ -17,7 +17,7 @@ public class Routine {
     @Column(nullable = false)
     public Date created_at;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name="exercises_routines")
-    public Collection<Exercise> excercises;
+    public Collection<Exercise> exercises;
 }
