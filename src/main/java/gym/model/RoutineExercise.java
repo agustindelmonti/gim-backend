@@ -2,6 +2,8 @@ package gym.model;
 
 import com.fasterxml.jackson.annotation.*;
 import gym.model.Routine;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -10,6 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="exercises_routines")
+@Getter @Setter
 public class RoutineExercise {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

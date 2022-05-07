@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {

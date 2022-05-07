@@ -6,6 +6,7 @@ import gym.repository.MuscleGroupRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -14,7 +15,7 @@ public class MuscleGroupService {
     private MuscleGroupRepository muscleGroupRepository;
 
     public MuscleGroup getById(Long id) {
-        return muscleGroupRepository.findById(id).orElseThrow();
+        return muscleGroupRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     public List<MuscleGroup> getAll() {

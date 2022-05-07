@@ -6,7 +6,7 @@ import gym.model.Routine;
 import gym.model.User;
 import gym.repository.RoleRepository;
 import gym.repository.UserRepository;
-import gym.utils.BusinessException;
+import gym.utils.ApplicationException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,16 +25,21 @@ public class UserService implements IUserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final RoutineService routineService;
 
-    public User createUser(UserCreateDto userDto) throws BusinessException {
+    public User createUser(UserCreateDto userDto) throws ApplicationException {
         if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new BusinessException("Email en uso");
+            throw new ApplicationException("Email en uso");
         }
 
         if (userRepository.existsByNroDoc(userDto.getNroDoc())) {
-            throw new BusinessException("Nro Documento en uso");
+            throw new ApplicationException("Nro Documento en uso");
         }
 
         User user = userDto.toUser();
+
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(true);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

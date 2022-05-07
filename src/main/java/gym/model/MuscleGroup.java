@@ -5,9 +5,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity(name="muscle_groups")
-@Getter
-@Setter
+@Entity
+@Table(name="muscle_groups")
+@Getter @Setter
 public class MuscleGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

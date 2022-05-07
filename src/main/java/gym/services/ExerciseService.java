@@ -7,6 +7,7 @@ import gym.repository.ExerciseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.HashSet;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class ExerciseService {
     }
 
     public Exercise getById(Long id) {
-        return exerciseRepository.findById(id).orElseThrow();
+        return exerciseRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     public Exercise create(ExerciseDto exerciseDto) {

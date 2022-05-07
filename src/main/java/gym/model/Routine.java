@@ -7,9 +7,9 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
 
-@Entity(name="routines")
-@Getter
-@Setter
+@Entity
+@Table(name="routines")
+@Getter @Setter
 public class Routine {
     @Id
     public Long id;

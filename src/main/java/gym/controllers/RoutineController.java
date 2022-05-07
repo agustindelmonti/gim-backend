@@ -2,16 +2,16 @@ package gym.controllers;
 
 import gym.model.Routine;
 import gym.services.RoutineService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController()
 @RequestMapping("/api/routines")
+@AllArgsConstructor
 public class RoutineController {
-    @Autowired
-    RoutineService routineService;
+    private RoutineService routineService;
 
     @GetMapping
     public List<Routine> getRoutines() {
