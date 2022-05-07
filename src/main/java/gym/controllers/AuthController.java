@@ -1,20 +1,15 @@
 package gym.controllers;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import gym.model.Role;
+import gym.model.User;
+import gym.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,21 +17,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import gym.model.Role;
-import gym.model.User;
-import gym.repository.UserRepository;
-import lombok.extern.log4j.Log4j2;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController()
 @RequestMapping("/api")
 @Log4j2
+@AllArgsConstructor
 public class AuthController {
-
-    @Autowired
-    private Environment env;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final Environment env;
+    private final UserRepository userRepository;
 
     /**
      * Refreshes the jwt access token

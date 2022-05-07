@@ -2,11 +2,13 @@ package gym.services;
 
 import gym.dtos.UserCreateDto;
 import gym.model.Role;
+import gym.model.Routine;
 import gym.model.User;
 import gym.repository.RoleRepository;
 import gym.repository.UserRepository;
-import gym.utils.BusinessException;
+import gym.utils.ApplicationException;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,17 +23,23 @@ public class UserService implements IUserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoutineService routineService;
 
-    public User createUser(UserCreateDto userDto) throws BusinessException {
+    public User createUser(UserCreateDto userDto) throws ApplicationException {
         if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new BusinessException("Email en uso");
+            throw new ApplicationException("Email en uso");
         }
 
         if (userRepository.existsByNroDoc(userDto.getNroDoc())) {
-            throw new BusinessException("Nro Documento en uso");
+            throw new ApplicationException("Nro Documento en uso");
         }
 
         User user = userDto.toUser();
+
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(true);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -55,5 +63,27 @@ public class UserService implements IUserService, UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         return user;
+    }
+
+    /**
+     * @return current logged user object
+     */
+    public User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String username = principal.toString();
+        if (principal instanceof User) {
+            username = ((UserDetails) principal).getUsername();
+        }
+        return userRepository.findByEmail(username);
+    }
+
+    public User setRoutine(Long routineId) {
+        User user = this.getCurrentUser();
+
+        Routine routine = routineService.getById(routineId);
+
+        user.setRoutine(routine);
+        return userRepository.save(user);
     }
 }

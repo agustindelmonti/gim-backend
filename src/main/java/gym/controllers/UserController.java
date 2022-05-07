@@ -5,7 +5,7 @@ import gym.dtos.UserProfileDto;
 import gym.model.User;
 import gym.repository.UserRepository;
 import gym.services.UserService;
-import gym.utils.BusinessException;
+import gym.utils.ApplicationException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -36,11 +36,17 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<User> createUser(@RequestBody @Validated UserCreateDto userDto) throws BusinessException {
+    public ResponseEntity<User> createUser(@RequestBody @Validated UserCreateDto userDto) throws ApplicationException {
         final User user = userService.createUser(userDto);
 
         URI uri = URI.create(
                 ServletUriComponentsBuilder.fromCurrentContextPath().path("api/users/" + user.getId()).toUriString());
         return ResponseEntity.created(uri).body(user);
+    }
+
+    @PostMapping("/routine")
+    public long setRoutine(@RequestBody long routineId) {
+        return routineId;
+        //return userService.setRoutine(routineId);
     }
 }

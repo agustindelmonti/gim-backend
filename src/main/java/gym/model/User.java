@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
@@ -33,6 +32,9 @@ public class User implements UserDetails {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<Role> roles = new ArrayList<>();
+
+	@ManyToOne
+	private Routine routine;
 
 	@Column(nullable = false)
 	private boolean enabled;
