@@ -1,8 +1,5 @@
 package gym.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.AllArgsConstructor;
@@ -47,7 +44,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (authorizationHeader == null || !authorizationHeader.startsWith(PREFIX)) {
-            log.debug("The request does not provide a bearer token");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             filterChain.doFilter(request, response);
             return;
@@ -55,13 +51,9 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         String token = authorizationHeader.replace(PREFIX, "");
         try {
-            String secret = env.getProperty("application.jwt.secret");
-            assert secret != null;
+            var t = new JWToken(env);
 
-            Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
-            JWTVerifier verifier = JWT.require(algorithm).build();
-            DecodedJWT decodedJWT = verifier.verify(token);
-
+            DecodedJWT decodedJWT = t.verify(token);
             String username = decodedJWT.getSubject();
             UserDetails userDetails = userService.loadUserByUsername(username);
 
@@ -76,8 +68,5 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-
-
     }
-
 }

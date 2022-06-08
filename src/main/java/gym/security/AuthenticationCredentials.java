@@ -1,9 +1,9 @@
-package gym.dtos;
+package gym.security;
 
 import lombok.Data;
 
 @Data
-public class AuthDto {
+public class AuthenticationCredentials {
     private String username;
     private String password;
 }

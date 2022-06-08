@@ -31,7 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        var customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(), env);
+        var customAuthenticationFilter = new JWTAuthenticationFilter(authenticationManagerBean(), env);
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
 
         http.cors().and().csrf().disable();
