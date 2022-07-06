@@ -20,6 +20,10 @@ public class UsersSeeder implements CommandLineRunner {
         String adminPassword = env.getProperty("application.admin.password");
         String adminDni = env.getProperty("application.admin.dni");
 
-        userService.createUser(new UserCreateDto(adminEmail, adminPassword, adminDni, Role.ADMIN_ID));
+        try {
+            userService.loadUserByUsername(adminEmail);
+        } catch (Exception exception) {
+            userService.createUser(new UserCreateDto(adminEmail, adminPassword, adminDni, Role.ADMIN_ID));
+        }
     }
 }
