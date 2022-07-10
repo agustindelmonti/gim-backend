@@ -25,7 +25,6 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    @Secured("ROLE_ADMIN")
     public List<User> getUsers() {
         return userRepository.findAll();
     }
