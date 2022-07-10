@@ -22,6 +22,9 @@ public class UserCreateDto {
     @NotBlank
     private String nroDoc;
 
+    @NotBlank
+    private String name;
+
     @Positive
     @NotNull
     private Long rolId;
@@ -31,6 +34,7 @@ public class UserCreateDto {
         user.setEmail(this.email);
         user.setPassword(this.password);
         user.setNroDoc(this.nroDoc);
+        user.setName(this.name);
         return user;
     }
 }

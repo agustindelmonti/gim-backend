@@ -18,3 +18,4 @@ application.jwt.token.expiration=14
 application.admin.email = admin@gmail.com
 application.admin.password = password
 application.admin.dni = 40100200
+application.admin.name = Admin
