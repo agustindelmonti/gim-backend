@@ -18,7 +18,7 @@ public class ExerciseService {
     private MuscleGroupService muscleGroupService;
 
     public List<Exercise> getExercises() {
-        return exerciseRepository.findAll();
+        return exerciseRepository.findAllByOrderByIdAsc();
     }
 
     public Exercise getById(Long id) {
