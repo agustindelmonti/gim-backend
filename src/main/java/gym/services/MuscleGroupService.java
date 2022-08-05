@@ -19,7 +19,7 @@ public class MuscleGroupService {
     }
 
     public List<MuscleGroup> getAll() {
-        return muscleGroupRepository.findAll();
+        return muscleGroupRepository.findAllByOrderByIdAsc();
     }
 
     public MuscleGroup create(MuscleGroupDto muscleGroupDto) {
