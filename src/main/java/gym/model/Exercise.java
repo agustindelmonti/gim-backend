@@ -18,6 +18,10 @@ public class Exercise {
     public String name;
 
     @ManyToMany()
-    @JoinTable(name="exercises_muscle_groups")
+    @JoinTable(
+        name="exercises_muscle_groups",
+        joinColumns = @JoinColumn(name = "exercise_id"),
+        inverseJoinColumns = @JoinColumn(name = "muscle_group_id")
+    )
     public Set<MuscleGroup> muscleGroups;
 }
