@@ -1,5 +1,6 @@
 package gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,5 +24,6 @@ public class MuscleGroup {
             joinColumns = @JoinColumn(name = "muscle_group_id"),
             inverseJoinColumns = @JoinColumn(name = "exercise_id")
     )
+    @JsonIgnore
     public Set<Exercise> exercises;
 }
