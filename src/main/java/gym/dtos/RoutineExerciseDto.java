@@ -1,5 +1,6 @@
 package gym.dtos;
 
+import gym.model.Exercise;
 import gym.model.RoutineExercise;
 import lombok.Data;
 
@@ -8,7 +9,6 @@ import javax.validation.constraints.Min;
 
 @Data
 public class RoutineExerciseDto {
-    public Long routineId;
     public Long exerciseId;
 
     @Min(1)
@@ -20,14 +20,4 @@ public class RoutineExerciseDto {
 
     @Min(1)
     public int reps;
-
-    public RoutineExercise toRoutineExercise() {
-        RoutineExercise routineExercise = new RoutineExercise();
-
-        routineExercise.day = this.day;
-        routineExercise.sets = this.sets;
-        routineExercise.reps = this.reps;
-
-        return routineExercise;
-    }
 }

@@ -12,12 +12,12 @@ import java.util.Date;
 @Getter @Setter
 public class Routine {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(nullable = false)
-    public Date created_at;
+    public String name;
 
-    @ManyToMany
-    @JoinTable(name="exercises_routines")
-    public Collection<Exercise> exercises;
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("day")
+    public Collection<RoutineExercise> routineExercises;
 }
