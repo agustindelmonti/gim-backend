@@ -18,7 +18,7 @@ public class MuscleGroup {
     @Column(nullable = false, unique = true)
     public String name;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(
             name="exercises_muscle_groups",
             joinColumns = @JoinColumn(name = "muscle_group_id"),
