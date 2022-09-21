@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -24,4 +25,7 @@ public class Exercise {
         inverseJoinColumns = @JoinColumn(name = "muscle_group_id")
     )
     public Set<MuscleGroup> muscleGroups;
+
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
+    public Collection<RoutineExercise> routineExercises;
 }

@@ -27,6 +27,9 @@ public class RoutineExercise {
 
     @ManyToOne()
     @JoinColumn(name = "exercise_id")
+    @JsonProperty("exercise_id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     public Exercise exercise;
 
     @NotNull
