@@ -7,6 +7,7 @@ import gym.repository.UserRepository;
 import gym.services.UserService;
 import gym.utils.ApplicationException;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -52,5 +53,11 @@ public class UserController {
     public long setRoutine(@RequestBody long routineId) {
         return routineId;
         //return userService.setRoutine(routineId);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable("id") Long id) {
+        userService.delete(id);
     }
 }
