@@ -1,5 +1,6 @@
 package gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class User implements UserDetails {
 	private String email;
 
 	@Column(nullable = false)
+	@JsonIgnore()
 	private String password;
 
 	@Column(nullable = false, unique = true)
