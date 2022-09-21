@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -84,6 +86,17 @@ public class UserService implements IUserService, UserDetailsService {
         Routine routine = routineService.getById(routineId);
 
         user.setRoutine(routine);
+        return userRepository.save(user);
+    }
+
+
+    public User getById(Long id) {
+        return this.userRepository.getById(id);
+    }
+    public User updatePayment(Long id) {
+        User user = this.getById(id);
+        user.setPayment(new Date());
+
         return userRepository.save(user);
     }
 }

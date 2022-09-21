@@ -43,6 +43,11 @@ public class UserController {
         return ResponseEntity.created(uri).body(user);
     }
 
+    @PostMapping("{id}/update-payment")
+    public User updatePayment(@PathVariable("id") Long id) {
+        return userService.updatePayment(id);
+    }
+
     @PostMapping("/routine")
     public long setRoutine(@RequestBody long routineId) {
         return routineId;

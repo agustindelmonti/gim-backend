@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Getter @Setter
@@ -31,6 +32,10 @@ public class User implements UserDetails {
 
 	@Column(nullable = false, unique = true)
 	private String nroDoc;
+
+	@Column()
+	@Temporal(TemporalType.DATE)
+	private Date payment = new Date();
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<Role> roles = new ArrayList<>();
