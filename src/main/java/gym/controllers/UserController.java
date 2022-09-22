@@ -22,12 +22,16 @@ import java.util.List;
 @RestController()
 @RequestMapping("/api/users")
 public class UserController {
-    private final UserRepository userRepository;
     private final UserService userService;
 
     @GetMapping()
     public List<User> getUsers() {
-        return userRepository.findAll();
+        return userService.getAll();
+    }
+
+    @GetMapping("/nro-doc/{nroDoc}")
+    public User getByNroDoc(@PathVariable String nroDoc) {
+        return userService.getByNroDoc(nroDoc);
     }
 
     @GetMapping("/me")

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -26,6 +27,14 @@ public class UserService implements IUserService, UserDetailsService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoutineService routineService;
+
+    public List<User> getAll() {
+        return userRepository.findAll();
+    }
+
+    public User getByNroDoc(String nroDoc) {
+        return userRepository.findByNroDoc(nroDoc);
+    }
 
     public User createUser(UserCreateDto userDto) throws ApplicationException {
         if (userRepository.existsByEmail(userDto.getEmail())) {
