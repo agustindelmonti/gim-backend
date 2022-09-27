@@ -2,6 +2,7 @@ package gym.controllers;
 
 import gym.dtos.UserCreateDto;
 import gym.dtos.UserProfileDto;
+import gym.dtos.UserUpdateDto;
 import gym.model.User;
 import gym.repository.UserRepository;
 import gym.services.UserService;
@@ -48,15 +49,14 @@ public class UserController {
         return ResponseEntity.created(uri).body(user);
     }
 
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable("id") Long id, @RequestBody @Validated UserUpdateDto userUpdateDto) {
+        return userService.updateUser(id, userUpdateDto);
+    }
+
     @PostMapping("{id}/update-payment")
     public User updatePayment(@PathVariable("id") Long id) {
         return userService.updatePayment(id);
-    }
-
-    @PostMapping("/routine")
-    public long setRoutine(@RequestBody long routineId) {
-        return routineId;
-        //return userService.setRoutine(routineId);
     }
 
     @DeleteMapping(value = "/{id}")

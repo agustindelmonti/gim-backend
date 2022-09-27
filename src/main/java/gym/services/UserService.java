@@ -1,6 +1,7 @@
 package gym.services;
 
 import gym.dtos.UserCreateDto;
+import gym.dtos.UserUpdateDto;
 import gym.model.Role;
 import gym.model.Routine;
 import gym.model.User;
@@ -89,18 +90,8 @@ public class UserService implements IUserService, UserDetailsService {
         return userRepository.findByEmail(username);
     }
 
-    public User setRoutine(Long routineId) {
-        User user = this.getCurrentUser();
-
-        Routine routine = routineService.getById(routineId);
-
-        user.setRoutine(routine);
-        return userRepository.save(user);
-    }
-
-
     public User getById(Long id) {
-        return this.userRepository.getById(id);
+        return this.userRepository.findById(id).orElseThrow();
     }
     public User updatePayment(Long id) {
         User user = this.getById(id);
@@ -111,5 +102,26 @@ public class UserService implements IUserService, UserDetailsService {
 
     public void delete(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public User updateUser(Long id, UserUpdateDto userUpdateDto) {
+        User user = this.getById(id);
+
+        user.setName(userUpdateDto.name);
+        user.setEmail(userUpdateDto.email);
+        user.setNroDoc(userUpdateDto.nroDoc);
+
+
+        final Role role = roleRepository.findById(userUpdateDto.rolId).orElseThrow();
+        user.getRoles().clear();
+        user.getRoles().add(role);
+
+        if (userUpdateDto.routineId != null) {
+            Routine routine = routineService.getById(userUpdateDto.routineId);
+
+            user.setRoutine(routine);
+        }
+
+        return userRepository.save(user);
     }
 }

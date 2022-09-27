@@ -1,6 +1,7 @@
 package gym.dtos;
 
 import gym.model.Role;
+import gym.model.Routine;
 import gym.model.User;
 import lombok.Data;
 
@@ -15,10 +16,13 @@ public class UserProfileDto implements Serializable {
     private final String nroDoc;
     private final Collection<String> roles;
 
+    private final Routine routine;
+
     public UserProfileDto(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.nroDoc = user.getNroDoc();
         this.roles = user.getRoles().stream().map(Role::getName).map(String::toLowerCase).collect(Collectors.toList());
+        this.routine = user.getRoutine();
     }
 }
