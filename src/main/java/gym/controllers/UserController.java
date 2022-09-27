@@ -1,16 +1,13 @@
 package gym.controllers;
 
 import gym.dtos.UserCreateDto;
-import gym.dtos.UserProfileDto;
 import gym.dtos.UserUpdateDto;
 import gym.model.User;
-import gym.repository.UserRepository;
 import gym.services.UserService;
 import gym.utils.ApplicationException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +33,8 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public UserProfileDto me(@AuthenticationPrincipal User user) {
-        return new UserProfileDto(user);
+    public User me(@AuthenticationPrincipal User user) {
+        return userService.getById(user.getId());
     }
 
 
