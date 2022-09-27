@@ -40,6 +40,12 @@ public class UserController {
         return new UserProfileDto(user);
     }
 
+
+    @GetMapping("/{id}")
+    public User updateUser(@PathVariable("id") Long id) {
+        return userService.getById(id);
+    }
+
     @PostMapping()
     public ResponseEntity<User> createUser(@RequestBody @Validated UserCreateDto userDto) throws ApplicationException {
         final User user = userService.createUser(userDto);
@@ -49,19 +55,21 @@ public class UserController {
         return ResponseEntity.created(uri).body(user);
     }
 
+
+
     @PutMapping("/{id}")
     public User updateUser(@PathVariable("id") Long id, @RequestBody @Validated UserUpdateDto userUpdateDto) {
         return userService.updateUser(id, userUpdateDto);
-    }
-
-    @PostMapping("{id}/update-payment")
-    public User updatePayment(@PathVariable("id") Long id) {
-        return userService.updatePayment(id);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("id") Long id) {
         userService.delete(id);
+    }
+
+    @PostMapping("{id}/update-payment")
+    public User updatePayment(@PathVariable("id") Long id) {
+        return userService.updatePayment(id);
     }
 }
