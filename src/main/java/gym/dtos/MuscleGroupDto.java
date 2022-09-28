@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class MuscleGroupDto {
-    @NotBlank(message = "Must not be blank")
+    @NotBlank(message = "Campo requerido")
     public String name;
 
     public MuscleGroup toMuscleGroup() {
