@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -27,19 +28,27 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private static final String PREFIX = "Bearer ";
-    private static final String[] PUBLIC_ROUTES = {"/api/login", "/api/refreshToken"};
+    private static final String[] PUBLIC_ROUTES = {
+            "/api/login",
+            "/api/refreshToken",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
 
     private Environment env;
     private UserDetailsService userService;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return Arrays.stream(PUBLIC_ROUTES)
+                .anyMatch(e -> new AntPathMatcher().match(e, request.getServletPath()));
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
-        if (Arrays.asList(PUBLIC_ROUTES).contains(request.getServletPath())) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 

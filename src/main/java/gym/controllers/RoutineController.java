@@ -1,10 +1,9 @@
 package gym.controllers;
 
-import gym.dtos.ExerciseDto;
 import gym.dtos.RoutineDto;
-import gym.model.Exercise;
 import gym.model.Routine;
 import gym.services.RoutineService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +14,7 @@ import java.util.List;
 @RestController()
 @RequestMapping("/api/routines")
 @AllArgsConstructor
+@SecurityRequirement(name = "bearer")
 public class RoutineController {
     private RoutineService routineService;
 

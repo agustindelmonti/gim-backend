@@ -5,6 +5,7 @@ import gym.dtos.UserUpdateDto;
 import gym.model.User;
 import gym.services.UserService;
 import gym.utils.ApplicationException;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController()
 @RequestMapping("/api/users")
+@SecurityRequirement(name = "bearer")
 public class UserController {
     private final UserService userService;
 
