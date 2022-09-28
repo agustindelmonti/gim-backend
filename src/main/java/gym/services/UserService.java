@@ -58,6 +58,11 @@ public class UserService implements IUserService, UserDetailsService {
         final Role role = roleRepository.findById(userDto.getRolId()).orElseThrow();
         user.getRoles().add(role);
 
+        if (userDto.getRoutineId() != null) {
+            Routine routine = routineService.getById(userDto.getRoutineId());
+            user.setRoutine(routine);
+        }
+
         return userRepository.save(user);
     }
 

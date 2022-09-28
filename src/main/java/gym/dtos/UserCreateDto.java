@@ -3,6 +3,8 @@ package gym.dtos;
 import gym.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -10,24 +12,25 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserCreateDto {
-    @NotBlank
+    @NonNull
     @Email
     private String email;
 
-    @NotBlank
+    @NonNull
     private String password;
 
-    @NotBlank
+    @NonNull
     private String nroDoc;
 
-    @NotBlank
+    @NonNull
     private String name;
 
-    @Positive
-    @NotNull
+    @NonNull
     private Long rolId;
+
+    private Long routineId;
 
     public User toUser() {
         User user = new User();
