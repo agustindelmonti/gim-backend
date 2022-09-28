@@ -25,7 +25,6 @@ public class UserUpdateDto {
     @NotBlank
     public String name;
 
-    @Positive
     @NotNull
     public Long rolId;
 

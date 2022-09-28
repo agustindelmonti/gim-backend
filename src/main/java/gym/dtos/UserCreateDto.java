@@ -1,36 +1,39 @@
 package gym.dtos;
 
 import gym.model.User;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 @Data
-@RequiredArgsConstructor
 public class UserCreateDto {
-    @NonNull
+    @NotBlank
     @Email
     private String email;
 
-    @NonNull
+    @NotBlank
     private String password;
 
-    @NonNull
+    @NotBlank
     private String nroDoc;
 
-    @NonNull
+    @NotBlank
     private String name;
 
     @NonNull
     private Long rolId;
 
     private Long routineId;
+
+    public UserCreateDto(String email, String password, String nroDoc, String name, @NonNull Long rolId) {
+        this.email = email;
+        this.password = password;
+        this.nroDoc = nroDoc;
+        this.name = name;
+        this.rolId = rolId;
+    }
 
     public User toUser() {
         User user = new User();

@@ -82,18 +82,6 @@ public class UserService implements IUserService, UserDetailsService {
         return user;
     }
 
-    /**
-     * @return current logged user object
-     */
-    public User getCurrentUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        String username = principal.toString();
-        if (principal instanceof User) {
-            username = ((UserDetails) principal).getUsername();
-        }
-        return userRepository.findByEmail(username);
-    }
 
     public User getById(Long id) {
         return this.userRepository.findById(id).orElseThrow();
@@ -111,6 +99,14 @@ public class UserService implements IUserService, UserDetailsService {
 
     public User updateUser(Long id, UserUpdateDto userUpdateDto) {
         User user = this.getById(id);
+
+        if (!user.getEmail().equals(userUpdateDto.getEmail()) && userRepository.existsByEmail(userUpdateDto.getEmail())) {
+            throw new ApplicationException("Email en uso");
+        }
+
+        if (!user.getNroDoc().equals(userUpdateDto.getNroDoc()) && userRepository.existsByNroDoc(userUpdateDto.getNroDoc())) {
+            throw new ApplicationException("Nro Documento en uso");
+        }
 
         user.setName(userUpdateDto.name);
         user.setEmail(userUpdateDto.email);
