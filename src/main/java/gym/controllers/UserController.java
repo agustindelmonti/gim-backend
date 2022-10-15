@@ -7,6 +7,8 @@ import gym.services.UserService;
 import gym.utils.ApplicationException;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,8 +27,19 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
+    @Deprecated(forRemoval = true)
     public List<User> getUsers() {
         return userService.getAll();
+    }
+
+    @GetMapping(headers = "X-API-VERSION=1")
+    public Page<User> getUsers(Pageable pageable) {
+        return userService.getAll(pageable);
+    }
+
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable("id") Long id) {
+        return userService.getById(id);
     }
 
     @GetMapping("/nro-doc/{nroDoc}")
@@ -39,13 +52,8 @@ public class UserController {
         return userService.getById(user.getId());
     }
 
-
-    @GetMapping("/{id}")
-    public User updateUser(@PathVariable("id") Long id) {
-        return userService.getById(id);
-    }
-
     @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> createUser(@RequestBody @Validated UserCreateDto userDto) throws ApplicationException {
         final User user = userService.createUser(userDto);
 
@@ -54,15 +62,13 @@ public class UserController {
         return ResponseEntity.created(uri).body(user);
     }
 
-
-
     @PutMapping("/{id}")
     public User updateUser(@PathVariable("id") Long id, @RequestBody @Validated UserUpdateDto userUpdateDto) {
         return userService.updateUser(id, userUpdateDto);
     }
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id) {
         userService.delete(id);
     }
