@@ -18,6 +18,11 @@ import java.util.List;
 public class RoutineController {
     private RoutineService routineService;
 
+    @GetMapping("/{id}")
+    public Routine getById(@PathVariable("id") Long id) {
+        return routineService.getById(id);
+    }
+
     @GetMapping
     public List<Routine> getRoutines() {
         return routineService.getRoutines();
@@ -29,10 +34,6 @@ public class RoutineController {
         return routineService.create(routineDto);
     }
 
-    @GetMapping("/{id}")
-    public Routine getById(@PathVariable("id") Long id) {
-        return routineService.getById(id);
-    }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -41,7 +42,7 @@ public class RoutineController {
     }
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id) {
         routineService.delete(id);
     }

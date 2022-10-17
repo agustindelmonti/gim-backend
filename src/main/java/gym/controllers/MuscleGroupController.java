@@ -41,7 +41,7 @@ public class MuscleGroupController {
     }
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id) {
         muscleGroupService.delete(id);
     }
