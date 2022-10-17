@@ -2,12 +2,14 @@ package gym.controllers;
 
 import gym.dtos.RoutineDto;
 import gym.model.Routine;
+import gym.model.User;
 import gym.services.RoutineService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,10 +48,11 @@ public class RoutineController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Routine create(@RequestBody @Valid RoutineDto routineDto) {
-        return routineService.create(routineDto);
+    public Routine create(
+            @RequestBody @Valid RoutineDto routineDto,
+            @AuthenticationPrincipal User creator) {
+        return routineService.create(routineDto, creator);
     }
-
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)

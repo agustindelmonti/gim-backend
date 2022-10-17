@@ -2,8 +2,8 @@ package gym.services;
 
 import gym.dtos.RoutineDto;
 import gym.dtos.RoutineExerciseDto;
+import gym.model.Exercise;
 import gym.model.Routine;
-import gym.model.RoutineExercise;
 import gym.model.User;
 import gym.repository.RoutineRepository;
 import gym.repository.UserRepository;
@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -24,7 +23,7 @@ public class RoutineService {
     private ExerciseService exerciseService;
 
     public Routine getById(Long id) {
-        return routineRepository.findById(id).orElseThrow();
+        return routineRepository.findById(id).orElseThrow(() -> new NotFoundException("Routine not found"));
     }
 
     public List<Routine> getRoutines() {
@@ -41,48 +40,39 @@ public class RoutineService {
         return routineRepository.findByCreator(user, pageable);
     }
 
-    public Routine create(RoutineDto routineDto) {
-        Routine routine = new Routine();
+    public Routine create(RoutineDto routineDto, User creator) {
+        final User user = userRepository.findById(routineDto.getUserId()).orElseThrow(() -> new NotFoundException("User not found"));
 
-        routine.name = routineDto.name;
-        routine.routineExercises = new HashSet<>();
+        Routine r = routineDto.toRoutine();
+        r.setCreator(creator);
+        r.setMember(user);
 
-        for (RoutineExerciseDto routineExerciseDto : routineDto.exercises) {
-            RoutineExercise routineExercise = new RoutineExercise();
-            routineExercise.day = routineExerciseDto.day;
-            routineExercise.sets = routineExerciseDto.sets;
-            routineExercise.reps = routineExerciseDto.reps;
-            routineExercise.routine = routine;
-            routineExercise.exercise = exerciseService.getById(routineExerciseDto.exerciseId);
-
-            routine.routineExercises.add(routineExercise);
+        for (RoutineExerciseDto e : routineDto.getExercises()) {
+            Exercise o = exerciseService.getById(e.getExerciseId());
+            r.getRoutineExercises().add(e.toRoutineExercise(o));
         }
 
-        return routineRepository.save(routine);
+        return routineRepository.save(r);
     }
 
     public Routine update(Long id, RoutineDto routineDto) {
         Routine routine = this.getById(id);
 
-        routine.name = routineDto.name;
-        routine.getRoutineExercises().clear();
+        Routine r = routineDto.toRoutine();
 
-        for (RoutineExerciseDto routineExerciseDto: routineDto.exercises) {
-            RoutineExercise routineExercise = new RoutineExercise();
-            routineExercise.day = routineExerciseDto.day;
-            routineExercise.sets = routineExerciseDto.sets;
-            routineExercise.reps = routineExerciseDto.reps;
-            routineExercise.routine = routine;
-            routineExercise.exercise = exerciseService.getById(routineExerciseDto.exerciseId);
-
-            routine.routineExercises.add(routineExercise);
+        for (RoutineExerciseDto e : routineDto.getExercises()) {
+            Exercise o = exerciseService.getById(e.getExerciseId());
+            r.getRoutineExercises().add(e.toRoutineExercise(o));
         }
 
-
+        routine.setName(r.getName());
+        routine.getRoutineExercises().clear();
+        routine.getRoutineExercises().addAll(r.getRoutineExercises());
         return routineRepository.save(routine);
     }
 
     public void delete(Long id) {
         routineRepository.deleteById(id);
     }
+
 }
