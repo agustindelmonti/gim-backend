@@ -5,6 +5,8 @@ import gym.model.Routine;
 import gym.services.RoutineService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +28,20 @@ public class RoutineController {
     @GetMapping
     public List<Routine> getRoutines() {
         return routineService.getRoutines();
+    }
+
+    @GetMapping(params = "member")
+    public Page<Routine> findAllAssignedRoutinesMember(
+            @RequestParam(name = "member") Long memberId,
+            Pageable pageable) {
+        return routineService.findAllRoutinesAssignedMember(memberId, pageable);
+    }
+
+    @GetMapping(params = "user")
+    public Page<Routine> findAllCreatedRoutinesByUser(
+            @RequestParam(name = "user") Long userId,
+            Pageable pageable) {
+        return routineService.findAllRoutinesCreatedByUser(userId, pageable);
     }
 
     @PostMapping

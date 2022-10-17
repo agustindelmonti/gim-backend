@@ -4,8 +4,13 @@ import gym.dtos.RoutineDto;
 import gym.dtos.RoutineExerciseDto;
 import gym.model.Routine;
 import gym.model.RoutineExercise;
+import gym.model.User;
 import gym.repository.RoutineRepository;
+import gym.repository.UserRepository;
+import gym.utils.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -15,23 +20,34 @@ import java.util.List;
 @AllArgsConstructor
 public class RoutineService {
     private RoutineRepository routineRepository;
+    private UserRepository userRepository;
     private ExerciseService exerciseService;
+
+    public Routine getById(Long id) {
+        return routineRepository.findById(id).orElseThrow();
+    }
 
     public List<Routine> getRoutines() {
         return routineRepository.findAll();
     }
 
-    public Routine getById(Long id) {
-        return routineRepository.findById(id).orElseThrow();
+    public Page<Routine> findAllRoutinesAssignedMember(Long userId, Pageable pageable) {
+        final User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
+        return routineRepository.findByMember(user, pageable);
+    }
+
+    public Page<Routine> findAllRoutinesCreatedByUser(Long userId, Pageable pageable) {
+        final User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
+        return routineRepository.findByCreator(user, pageable);
     }
 
     public Routine create(RoutineDto routineDto) {
         Routine routine = new Routine();
 
         routine.name = routineDto.name;
-        routine.routineExercises = new HashSet<RoutineExercise>();
+        routine.routineExercises = new HashSet<>();
 
-        for (RoutineExerciseDto routineExerciseDto: routineDto.exercises) {
+        for (RoutineExerciseDto routineExerciseDto : routineDto.exercises) {
             RoutineExercise routineExercise = new RoutineExercise();
             routineExercise.day = routineExerciseDto.day;
             routineExercise.sets = routineExerciseDto.sets;
