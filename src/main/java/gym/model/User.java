@@ -1,7 +1,6 @@
 package gym.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Getter @Setter
@@ -51,6 +48,19 @@ public class User implements UserDetails {
 	private boolean credentialsNonExpired;
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
+
+	/**
+	 * Routines assigned to user by other responsible user with admin or employee roles
+	 */
+	@OneToMany(mappedBy = "member", orphanRemoval = true, fetch = FetchType.LAZY)
+	private Set<Routine> assignedRoutines = new LinkedHashSet<>();
+
+	/**
+	 * Routines created by the user
+	 * only users with admin or employees roles should have elements
+	 */
+	@OneToMany(mappedBy = "creator", orphanRemoval = true)
+	private Set<Routine> createdRoutines = new LinkedHashSet<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
