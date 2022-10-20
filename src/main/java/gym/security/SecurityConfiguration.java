@@ -29,6 +29,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder bCryptPasswordEncoder;
     private final Environment env;
 
+    private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            // other public endpoints of your API may be appended to this array
+            "/api/login",
+            "/api/refreshToken"
+    };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         var customAuthenticationFilter = new JWTAuthenticationFilter(authenticationManagerBean(), env);
@@ -37,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers("/api/login", "/api/refreshToken").permitAll()
+        http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
                 .and().authorizeRequests().anyRequest().authenticated();
 
         http.authorizeHttpRequests().anyRequest().permitAll();

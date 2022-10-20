@@ -1,8 +1,12 @@
 package gym.model;
 
-import com.fasterxml.jackson.annotation.*;
-import gym.model.Routine;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,29 +15,32 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="exercises_routines")
-@Getter @Setter
+@Table(name = "exercises_routines")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class RoutineExercise {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long id;
+    private Long id;
 
-    @ManyToOne()
-    @JoinColumn(name = "routine_id")
-    @JsonProperty("routine_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "routine_id", nullable = false, referencedColumnName = "id")
+    @JsonIgnore()
+    private Routine routine;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "exercise_id", nullable = false, referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
-    public Routine routine;
-
-    @ManyToOne()
-    @JoinColumn(name = "exercise_id")
-    public Exercise exercise;
+    private Exercise exercise;
 
     @NotNull
     @Min(1)
     @Max(7)
-    public int day;
+    private int day;
 
-    public int sets;
-    public int reps;
+    private int sets;
+    private int reps;
 }

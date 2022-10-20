@@ -3,6 +3,7 @@ package gym.controllers;
 import gym.dtos.MuscleGroupDto;
 import gym.model.MuscleGroup;
 import gym.services.MuscleGroupService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController()
 @RequestMapping("/api/muscle-groups")
 @AllArgsConstructor
+@SecurityRequirement(name = "bearer")
 public class MuscleGroupController {
     private MuscleGroupService muscleGroupService;
 
@@ -39,7 +41,7 @@ public class MuscleGroupController {
     }
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id) {
         muscleGroupService.delete(id);
     }

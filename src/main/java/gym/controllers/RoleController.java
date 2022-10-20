@@ -1,9 +1,8 @@
 package gym.controllers;
 
 import gym.model.Role;
-import gym.model.User;
 import gym.services.RoleService;
-import gym.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController()
 @RequestMapping("/api/roles")
+@SecurityRequirement(name = "bearer")
 public class RoleController {
     private final RoleService roleService;
 

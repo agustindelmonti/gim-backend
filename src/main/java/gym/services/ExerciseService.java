@@ -4,10 +4,10 @@ import gym.dtos.ExerciseDto;
 import gym.model.Exercise;
 import gym.model.MuscleGroup;
 import gym.repository.ExerciseRepository;
+import gym.utils.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.HashSet;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class ExerciseService {
     }
 
     public Exercise getById(Long id) {
-        return exerciseRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return exerciseRepository.findById(id).orElseThrow(() -> new NotFoundException("Exercise not found"));
     }
 
     public Exercise create(ExerciseDto exerciseDto) {

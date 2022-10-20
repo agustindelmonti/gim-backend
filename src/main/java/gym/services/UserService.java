@@ -9,7 +9,8 @@ import gym.repository.RoleRepository;
 import gym.repository.UserRepository;
 import gym.utils.ApplicationException;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,6 +32,10 @@ public class UserService implements IUserService, UserDetailsService {
 
     public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    public Page<User> getAll(Pageable page) {
+        return userRepository.findAll(page);
     }
 
     public User getByNroDoc(String nroDoc) {
