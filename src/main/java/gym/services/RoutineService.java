@@ -1,7 +1,6 @@
 package gym.services;
 
 import gym.dtos.RoutineDto;
-import gym.dtos.RoutineExerciseDto;
 import gym.model.Exercise;
 import gym.model.Routine;
 import gym.model.User;
@@ -14,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -43,32 +43,32 @@ public class RoutineService {
     public Routine create(RoutineDto routineDto, User creator) {
         final User user = userRepository.findById(routineDto.getUserId()).orElseThrow(() -> new NotFoundException("User not found"));
 
-        Routine r = routineDto.toRoutine();
+        Routine r = new Routine();
+        r.setName(routineDto.getName());
         r.setCreator(creator);
         r.setMember(user);
 
-        for (RoutineExerciseDto e : routineDto.getExercises()) {
-            Exercise o = exerciseService.getById(e.getExerciseId());
-            r.getRoutineExercises().add(e.toRoutineExercise(o));
-        }
-
-        return routineRepository.save(r);
+        return parseExercisesSet(routineDto, r);
     }
 
     public Routine update(Long id, RoutineDto routineDto) {
-        Routine routine = this.getById(id);
+        Routine r = this.getById(id);
 
-        Routine r = routineDto.toRoutine();
+        r.setName(routineDto.getName());
+        r.getRoutineExercises().clear();
 
-        for (RoutineExerciseDto e : routineDto.getExercises()) {
-            Exercise o = exerciseService.getById(e.getExerciseId());
-            r.getRoutineExercises().add(e.toRoutineExercise(o));
-        }
+        return parseExercisesSet(routineDto, r);
+    }
 
-        routine.setName(r.getName());
-        routine.getRoutineExercises().clear();
-        routine.getRoutineExercises().addAll(r.getRoutineExercises());
-        return routineRepository.save(routine);
+    private Routine parseExercisesSet(RoutineDto routineDto, Routine r) {
+        var exercises = routineDto.getExercises().stream().map(re -> {
+            Exercise exercise = exerciseService.getById(re.getExerciseId());
+            return re.toRoutineExercise(exercise, r);
+        }).collect(Collectors.toSet());
+
+        r.getRoutineExercises().addAll(exercises);
+
+        return routineRepository.save(r);
     }
 
     public void delete(Long id) {

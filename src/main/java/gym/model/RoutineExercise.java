@@ -2,7 +2,7 @@ package gym.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,15 +25,15 @@ public class RoutineExercise {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne()
-    @JoinColumn(name = "routine_id")
-    @JsonProperty("routine_id")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "routine_id", nullable = false, referencedColumnName = "id")
+    @JsonIgnore()
     private Routine routine;
 
-    @ManyToOne()
-    @JoinColumn(name = "exercise_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "exercise_id", nullable = false, referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Exercise exercise;
 
     @NotNull

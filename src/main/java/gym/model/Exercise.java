@@ -29,7 +29,7 @@ public class Exercise {
     )
     public Set<MuscleGroup> muscleGroups;
 
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     public Collection<RoutineExercise> routineExercises;

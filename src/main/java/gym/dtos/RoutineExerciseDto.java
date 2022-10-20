@@ -1,6 +1,7 @@
 package gym.dtos;
 
 import gym.model.Exercise;
+import gym.model.Routine;
 import gym.model.RoutineExercise;
 import lombok.Data;
 
@@ -23,12 +24,13 @@ public class RoutineExerciseDto {
     @Min(1)
     private int reps;
 
-    public RoutineExercise toRoutineExercise(Exercise exercise) {
+    public RoutineExercise toRoutineExercise(Exercise exercise, Routine routine) {
         RoutineExercise ex = new RoutineExercise();
         ex.setDay(day);
         ex.setSets(sets);
         ex.setReps(reps);
         ex.setExercise(exercise);
+        ex.setRoutine(routine);
         return ex;
     }
 }

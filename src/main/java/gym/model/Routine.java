@@ -17,13 +17,13 @@ import java.util.HashSet;
 public class Routine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
-    public String name;
+    private String name;
 
     @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("day")
-    public Collection<RoutineExercise> routineExercises = new HashSet<>();
+    private Collection<RoutineExercise> routineExercises = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
