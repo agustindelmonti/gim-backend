@@ -91,6 +91,7 @@ public class UserService implements IUserService, UserDetailsService {
     public User getById(Long id) {
         return this.userRepository.findById(id).orElseThrow();
     }
+
     public User updatePayment(Long id) {
         User user = this.getById(id);
         user.setPayment(new Date());

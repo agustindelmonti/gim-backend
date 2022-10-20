@@ -62,6 +62,10 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "creator", orphanRemoval = true)
 	private Set<Routine> createdRoutines = new LinkedHashSet<>();
 
+	@OneToMany(mappedBy = "user", orphanRemoval = true)
+	@OrderBy("paymentDate DESC")
+	private List<Payment> payments = new ArrayList<>();
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).toList();

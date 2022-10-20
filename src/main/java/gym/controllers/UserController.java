@@ -62,7 +62,9 @@ public class UserController {
         return ResponseEntity.created(uri).body(user);
     }
 
+    @Deprecated(forRemoval = true)
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
     public User updateUser(@PathVariable("id") Long id, @RequestBody @Validated UserUpdateDto userUpdateDto) {
         return userService.updateUser(id, userUpdateDto);
     }
