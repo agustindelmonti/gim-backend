@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ar" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Template for HTML email</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+</head>
+<body>
+<p>
+    Hola, <span th:text="${name}">Peter Static</span>!
+</p>
+<p>
+    Recibimos correctamente tu pago de $
+    <!--/*@thymesVar id="amount" type="gym.model.Payment"*/-->
+    <span th:text="${amount}">2000</span>
+</p>
+</body>
+</html>

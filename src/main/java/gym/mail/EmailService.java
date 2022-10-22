@@ -59,9 +59,8 @@ public class EmailService {
             context.setVariables(email.getProperties());
             String htmlBody = springTemplateEngine.process(email.getTemplate(), context);
 
-            helper.setFrom(email.getFrom());
             helper.setTo(email.getTo());
-            helper.setFrom(email.getFrom());
+            helper.setFrom(email.getFrom() == null ? username : email.getFrom());
             helper.setSubject(email.getSubject());
             helper.setText(htmlBody, true);
 
