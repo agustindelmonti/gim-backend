@@ -33,6 +33,17 @@ public class User implements UserDetails {
 	@Column(nullable = false, unique = true)
 	private String nroDoc;
 
+	private String gender;
+	private String phone;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "birthday")
+	private Date birthday;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@JoinColumn(name = "address_id")
+	private Address address;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<Role> roles = new ArrayList<>();
 
