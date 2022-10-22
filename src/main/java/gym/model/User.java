@@ -33,15 +33,8 @@ public class User implements UserDetails {
 	@Column(nullable = false, unique = true)
 	private String nroDoc;
 
-	@Column()
-	@Temporal(TemporalType.DATE)
-	private Date payment = new Date();
-
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<Role> roles = new ArrayList<>();
-
-	@ManyToOne
-	private Routine routine;
 
 	@Column(nullable = false)
 	private boolean enabled;

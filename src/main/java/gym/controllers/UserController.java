@@ -75,8 +75,4 @@ public class UserController {
         userService.delete(id);
     }
 
-    @PostMapping("{id}/update-payment")
-    public User updatePayment(@PathVariable("id") Long id) {
-        return userService.updatePayment(id);
-    }
 }

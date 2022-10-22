@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -85,13 +84,6 @@ public class UserService implements IUserService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
-    }
-
-    public User updatePayment(Long id) {
-        User user = this.getById(id);
-        user.setPayment(new Date());
-
-        return userRepository.save(user);
     }
 
     public void delete(Long id) {
