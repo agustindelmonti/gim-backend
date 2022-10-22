@@ -3,12 +3,13 @@ package gym.services;
 import gym.dtos.UserCreateDto;
 import gym.dtos.UserUpdateDto;
 import gym.model.Role;
-import gym.model.Routine;
 import gym.model.User;
 import gym.repository.RoleRepository;
 import gym.repository.UserRepository;
+import gym.users.SuccessfulUserRegistrationEvent;
 import gym.utils.ApplicationException;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +29,7 @@ public class UserService implements IUserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final RoutineService routineService;
 
     public List<User> getAll() {
@@ -52,23 +54,19 @@ public class UserService implements IUserService, UserDetailsService {
         }
 
         User user = userDto.toUser();
-
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
         user.setEnabled(true);
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         final Role role = roleRepository.findById(userDto.getRolId()).orElseThrow();
         user.getRoles().add(role);
+        user = userRepository.save(user);
 
-        if (userDto.getRoutineId() != null) {
-            Routine routine = routineService.getById(userDto.getRoutineId());
-            user.setRoutine(routine);
-        }
+        applicationEventPublisher.publishEvent(new SuccessfulUserRegistrationEvent(this, user));
 
-        return userRepository.save(user);
+        return user;
     }
 
     @Override
@@ -122,12 +120,6 @@ public class UserService implements IUserService, UserDetailsService {
         final Role role = roleRepository.findById(userUpdateDto.rolId).orElseThrow();
         user.getRoles().clear();
         user.getRoles().add(role);
-
-        if (userUpdateDto.routineId != null) {
-            Routine routine = routineService.getById(userUpdateDto.routineId);
-
-            user.setRoutine(routine);
-        }
 
         return userRepository.save(user);
     }

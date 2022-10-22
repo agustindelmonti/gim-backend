@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ar" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Template for HTML email</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+</head>
+<body>
+<h4>
+    Bienvenido al gimnasio
+    <span th:text="${name}">Peter Static</span>!
+</h4>
+<p>
+    Ahora podes acceder a todos los servicios de nuestro gimnasio accediendo a nuestra pagina
+    <!--/*@thymesVar id="url" type="String"*/-->
+    <a lang="ar" th:ref="${url}">localhost:8080</a>
+</p>
+</body>
+</html>
