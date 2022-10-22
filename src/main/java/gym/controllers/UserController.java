@@ -5,9 +5,11 @@ import gym.dtos.UserPasswordDto;
 import gym.dtos.UserUpdateDto;
 import gym.model.User;
 import gym.services.UserService;
+import gym.users.SuccessfulUserRegistrationEvent;
 import gym.utils.ApplicationException;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ import java.util.List;
 @SecurityRequirement(name = "bearer")
 public class UserController {
     private final UserService userService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @GetMapping()
     public List<User> getUsers() {
@@ -60,6 +63,9 @@ public class UserController {
 
         URI uri = URI.create(
                 ServletUriComponentsBuilder.fromCurrentContextPath().path("api/users/" + user.getId()).toUriString());
+
+        applicationEventPublisher.publishEvent(new SuccessfulUserRegistrationEvent(this, user));
+
         return ResponseEntity.created(uri).body(user);
     }
 
