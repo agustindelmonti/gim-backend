@@ -3,7 +3,6 @@ package gym.users;
 import gym.mail.Email;
 import gym.mail.EmailService;
 import gym.model.User;
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
@@ -15,12 +14,15 @@ import java.util.Map;
 
 @Log4j2
 @Component
-@AllArgsConstructor
 public class UserEventListener {
     private final EmailService emailService;
 
     @Value("${application.frontend.url}")
     private String url;
+
+    public UserEventListener(EmailService emailService) {
+        this.emailService = emailService;
+    }
 
     @Async
     @EventListener

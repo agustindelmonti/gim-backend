@@ -8,6 +8,7 @@ import gym.repository.RoleRepository;
 import gym.repository.UserRepository;
 import gym.users.SuccessfulUserRegistrationEvent;
 import gym.utils.ApplicationException;
+import gym.utils.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -30,7 +31,14 @@ public class UserService implements IUserService, UserDetailsService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher applicationEventPublisher;
-    private final RoutineService routineService;
+
+    public User getById(Long id) throws NotFoundException {
+        return this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found"));
+    }
+
+    public User getByNroDoc(String nroDoc) throws NotFoundException {
+        return userRepository.findByNroDoc(nroDoc).orElseThrow(() -> new NotFoundException("User not found"));
+    }
 
     public List<User> getAll() {
         return userRepository.findAll();
@@ -38,10 +46,6 @@ public class UserService implements IUserService, UserDetailsService {
 
     public Page<User> getAll(Pageable page) {
         return userRepository.findAll(page);
-    }
-
-    public User getByNroDoc(String nroDoc) {
-        return userRepository.findByNroDoc(nroDoc);
     }
 
     public User createUser(UserCreateDto userDto) throws ApplicationException {
@@ -71,23 +75,16 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Override
     public void addRoleToUser(String email, String roleName) {
-        User user = userRepository.findByEmail(email);
-        final Role role = roleRepository.findByName(roleName);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found"));
+        final Role role = roleRepository.findByName(roleName)
+                .orElseThrow(() -> new NotFoundException(String.format("Role %s not found", roleName)));
         user.getRoles().add(role);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final User user = userRepository.findByEmail(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return user;
-    }
-
-
-    public User getById(Long id) {
-        return this.userRepository.findById(id).orElseThrow();
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
     public User updatePayment(Long id) {
@@ -115,12 +112,6 @@ public class UserService implements IUserService, UserDetailsService {
         user.setName(userUpdateDto.name);
         user.setEmail(userUpdateDto.email);
         user.setNroDoc(userUpdateDto.nroDoc);
-
-
-        final Role role = roleRepository.findById(userUpdateDto.rolId).orElseThrow();
-        user.getRoles().clear();
-        user.getRoles().add(role);
-
         return userRepository.save(user);
     }
 }
