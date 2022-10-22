@@ -1,6 +1,7 @@
 package gym.controllers;
 
 import gym.dtos.UserCreateDto;
+import gym.dtos.UserPasswordDto;
 import gym.dtos.UserUpdateDto;
 import gym.model.User;
 import gym.services.UserService;
@@ -16,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -27,7 +29,6 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    @Deprecated(forRemoval = true)
     public List<User> getUsers() {
         return userService.getAll();
     }
@@ -62,9 +63,7 @@ public class UserController {
         return ResponseEntity.created(uri).body(user);
     }
 
-    @Deprecated(forRemoval = true)
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
     public User updateUser(@PathVariable("id") Long id, @RequestBody @Validated UserUpdateDto userUpdateDto) {
         return userService.updateUser(id, userUpdateDto);
     }
@@ -73,6 +72,26 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id) {
         userService.delete(id);
+    }
+
+
+    /**
+     * Changes the current user password
+     */
+    @PutMapping("/updatePassword")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<?> changePassword(
+            @Valid @RequestBody UserPasswordDto changePasswordDto,
+            @AuthenticationPrincipal User user) {
+
+        if (userService.checkIfValidOldPassword(user, changePasswordDto.getOldPassword())) {
+            return ResponseEntity.badRequest().body("Wrong password");
+        }
+        if (!changePasswordDto.checkPasswordsMatch()) {
+            return ResponseEntity.badRequest().body("New passwords provided do not match");
+        }
+        userService.changeUserPassword(user, changePasswordDto.getNewPassword());
+        return ResponseEntity.noContent().build();
     }
 
 }

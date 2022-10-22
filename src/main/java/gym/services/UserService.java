@@ -106,4 +106,12 @@ public class UserService implements IUserService, UserDetailsService {
         user.setNroDoc(userUpdateDto.nroDoc);
         return userRepository.save(user);
     }
+
+    public void changeUserPassword(final User user, final String password) {
+        user.setPassword(passwordEncoder.encode(password));
+    }
+
+    public boolean checkIfValidOldPassword(final User user, final String oldPassword) {
+        return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
 }
