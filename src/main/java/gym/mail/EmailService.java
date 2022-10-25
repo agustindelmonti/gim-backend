@@ -1,8 +1,10 @@
 package gym.mail;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -16,35 +18,24 @@ import java.util.Objects;
 import java.util.Properties;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Log4j2
 public class EmailService {
-    @Value("${spring.mail.host}")
-    private String host;
-
-    @Value("${spring.mail.username}")
-    private String username;
-
-    @Value("${spring.mail.password}")
-    private String password;
-
-    @Value("${spring.mail.port}")
-    private String port;
-
+    private MailProperties props;
     private final SpringTemplateEngine springTemplateEngine;
 
     private Session getSession() {
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
         prop.put("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.host", host);
-        prop.put("mail.smtp.port", port);
-        prop.put("mail.smtp.ssl.trust", host);
+        prop.put("mail.smtp.host", props.getHost());
+        prop.put("mail.smtp.port", props.getPort());
+        prop.put("mail.smtp.ssl.trust", props.getHost());
 
         return Session.getInstance(prop, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
+                return new PasswordAuthentication(props.getUsername(), props.getPassword());
             }
         });
     }
@@ -60,7 +51,7 @@ public class EmailService {
             String htmlBody = springTemplateEngine.process(email.getTemplate(), context);
 
             helper.setTo(email.getTo());
-            helper.setFrom(email.getFrom() == null ? username : email.getFrom());
+            helper.setFrom(email.getFrom() == null ? props.getUsername() : email.getFrom());
             helper.setSubject(email.getSubject());
             helper.setText(htmlBody, true);
 
