@@ -13,7 +13,8 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
@@ -21,14 +22,19 @@ public class User implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private String name;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type", nullable = false)
+	private UserType type = UserType.MEMBER;
+
 	@Column(nullable = false, unique = true)
 	private String email;
 
 	@Column(nullable = false)
 	@JsonIgnore()
 	private String password;
+
+	@Column(nullable = false)
+	private String name;
 
 	@Column(nullable = false, unique = true)
 	private String nroDoc;
