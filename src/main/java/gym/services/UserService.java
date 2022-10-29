@@ -73,10 +73,10 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public void addRoleToUser(String email, String roleName) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found"));
-        final Role role = roleRepository.findByName(roleName)
-                .orElseThrow(() -> new NotFoundException(String.format("Role %s not found", roleName)));
+    public void addRoleToUser(Long userId, Long roleId) {
+        User user = getById(userId);
+        final Role role = roleRepository.findById(roleId)
+                .orElseThrow(() -> new NotFoundException(String.format("Role %s not found", roleId)));
         user.getRoles().add(role);
     }
 

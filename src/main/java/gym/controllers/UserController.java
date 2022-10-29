@@ -74,6 +74,11 @@ public class UserController {
         userService.delete(id);
     }
 
+    @PutMapping("/{user}/roles/add/{role}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addRoleToUser(@PathVariable("user") Long userId, @PathVariable("role") Long roleId) {
+        userService.addRoleToUser(userId, roleId);
+    }
 
     /**
      * Changes the current user password
