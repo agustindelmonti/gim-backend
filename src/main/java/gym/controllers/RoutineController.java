@@ -1,5 +1,6 @@
 package gym.controllers;
 
+import gym.dtos.RoutineDetailDto;
 import gym.dtos.RoutineDto;
 import gym.model.Routine;
 import gym.model.User;
@@ -33,17 +34,19 @@ public class RoutineController {
     }
 
     @GetMapping(params = "member")
-    public Page<Routine> findAllAssignedRoutinesMember(
+    public Page<RoutineDetailDto> findAllAssignedRoutinesMember(
             @RequestParam(name = "member") Long memberId,
             Pageable pageable) {
-        return routineService.findAllRoutinesAssignedMember(memberId, pageable);
+        Page<Routine> routines = routineService.findAllRoutinesAssignedMember(memberId, pageable);
+        return routines.map(RoutineDetailDto::new);
     }
 
     @GetMapping(params = "user")
-    public Page<Routine> findAllCreatedRoutinesByUser(
+    public Page<RoutineDetailDto> findAllCreatedRoutinesByUser(
             @RequestParam(name = "user") Long userId,
             Pageable pageable) {
-        return routineService.findAllRoutinesCreatedByUser(userId, pageable);
+        Page<Routine> routines = routineService.findAllRoutinesCreatedByUser(userId, pageable);
+        return routines.map(RoutineDetailDto::new);
     }
 
     @PostMapping
