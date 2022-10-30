@@ -44,7 +44,6 @@ public class RoutineService {
         final User user = userRepository.findById(routineDto.getUserId()).orElseThrow(() -> new NotFoundException("User not found"));
 
         Routine r = new Routine();
-        r.setName(routineDto.getName());
         r.setCreator(creator);
         r.setMember(user);
 
@@ -54,9 +53,7 @@ public class RoutineService {
     public Routine update(Long id, RoutineDto routineDto) {
         Routine r = this.getById(id);
 
-        r.setName(routineDto.getName());
         r.getRoutineExercises().clear();
-
         return parseExercisesSet(routineDto, r);
     }
 
@@ -65,8 +62,11 @@ public class RoutineService {
             Exercise exercise = exerciseService.getById(re.getExerciseId());
             return re.toRoutineExercise(exercise, r);
         }).collect(Collectors.toSet());
-
         r.getRoutineExercises().addAll(exercises);
+
+        r.setName(routineDto.getName());
+        r.setFrom(routineDto.getFrom());
+        r.setTo(routineDto.getTo());
 
         return routineRepository.save(r);
     }

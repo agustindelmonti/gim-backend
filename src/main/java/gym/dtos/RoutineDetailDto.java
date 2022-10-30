@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -18,6 +19,8 @@ public class RoutineDetailDto {
     String name;
     String user;
     String creator;
+    LocalDate from;
+    LocalDate to;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 
@@ -26,6 +29,8 @@ public class RoutineDetailDto {
         this.name = r.getName();
         this.user = r.getMember().getName();
         this.creator = r.getCreator().getName();
+        this.from = r.getFrom();
+        this.to = r.getTo();
         this.createdAt = r.getCreatedAt();
         this.updatedAt = r.getUpdatedAt();
     }
