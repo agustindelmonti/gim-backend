@@ -99,4 +99,8 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/search")
+    public List<User> findByNameLike(@RequestParam("name") String name) {
+        return userService.searchByNameLike(name);
+    }
 }

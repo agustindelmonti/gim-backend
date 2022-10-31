@@ -47,6 +47,10 @@ public class UserService implements IUserService, UserDetailsService {
         return userRepository.findAll(page);
     }
 
+    public List<User> searchByNameLike(String name) {
+        return userRepository.findAllByNameContainingIgnoreCase(name);
+    }
+
     public User createUser(UserCreateDto userDto) throws ApplicationException {
         if (userRepository.existsByEmail(userDto.getEmail())) {
             throw new ApplicationException("Email en uso");
