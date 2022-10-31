@@ -2,6 +2,7 @@ package gym.controllers;
 
 import gym.dtos.RoutineDetailDto;
 import gym.dtos.RoutineDto;
+import gym.dtos.RoutineWithExercisesDto;
 import gym.model.Routine;
 import gym.model.User;
 import gym.services.RoutineService;
@@ -24,8 +25,9 @@ public class RoutineController {
     private RoutineService routineService;
 
     @GetMapping("/{id}")
-    public Routine getById(@PathVariable("id") Long id) {
-        return routineService.getById(id);
+    public RoutineWithExercisesDto getById(@PathVariable("id") Long id) {
+        Routine routine = routineService.getById(id);
+        return new RoutineWithExercisesDto(routine);
     }
 
     @GetMapping
