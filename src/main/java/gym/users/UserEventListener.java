@@ -32,16 +32,15 @@ public class UserEventListener {
     }
 
     private Email buildSuccessfulRegistrationEmail(User user) {
-        Email email = new Email();
-        email.setTo(user.getEmail());
-        email.setSubject("Bienvenido al gimnasio");
-        email.setTemplate("registration.html");
-
         Map<String, Object> properties = new HashMap<>();
         properties.put("name", user.getName());
         properties.put("url", url);
-        email.setProperties(properties);
 
-        return email;
+        return Email.builder()
+                .to(user.getEmail())
+                .subject("Bienvenido al gim!")
+                .template("registration.html")
+                .properties(properties)
+                .build();
     }
 }

@@ -1,14 +1,14 @@
 package gym.mail;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Map;
 
-@Getter
-@Setter
+@Data
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Email {
     private String from;
     private String to;

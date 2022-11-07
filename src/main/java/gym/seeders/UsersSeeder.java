@@ -16,10 +16,10 @@ public class UsersSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        String adminEmail = env.getProperty("application.admin.email");
-        String adminPassword = env.getProperty("application.admin.password");
-        String adminDni = env.getProperty("application.admin.dni");
-        String adminName = env.getProperty("application.admin.name");
+        String adminEmail = env.getProperty("application.admin.email", "admin@admin.com.ar");
+        String adminPassword = env.getProperty("application.admin.password", "admin");
+        String adminDni = env.getProperty("application.admin.dni", "10000000");
+        String adminName = env.getProperty("application.admin.name", "admin");
 
         try {
             userService.loadUserByUsername(adminEmail);

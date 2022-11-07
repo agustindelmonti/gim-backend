@@ -3,7 +3,6 @@ package gym.services;
 import gym.dtos.PaymentCreateDto;
 import gym.model.Payment;
 import gym.model.User;
-import gym.payments.SuccessfulPaymentEvent;
 import gym.repository.PaymentRepository;
 import gym.utils.NotFoundException;
 import lombok.AllArgsConstructor;
@@ -37,10 +36,6 @@ public class PaymentService {
         Payment payment = new Payment();
         payment.setAmount(paymentCreateDto.getAmount());
         payment.setUser(user);
-        paymentRepository.save(payment);
-
-        applicationEventPublisher.publishEvent(new SuccessfulPaymentEvent(this, payment));
-
-        return payment;
+        return paymentRepository.save(payment);
     }
 }

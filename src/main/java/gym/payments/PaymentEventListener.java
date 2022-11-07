@@ -26,17 +26,16 @@ public class PaymentEventListener {
     }
 
     private Email buildSuccessfulPaymentEmail(Payment payment) {
-        Email email = new Email();
-        email.setTo(payment.getUser().getEmail());
-        email.setSubject("Payment");
-        email.setTemplate("successful_payment.html");
-
         Map<String, Object> properties = new HashMap<>();
         properties.put("name", payment.getUser().getName());
         properties.put("paymentDatetime", payment.getPaymentDate().toString());
         properties.put("amount", payment.getAmount());
-        email.setProperties(properties);
 
-        return email;
+        return Email.builder()
+                .to(payment.getUser().getEmail())
+                .subject("Payment")
+                .template("successful_payment.html")
+                .properties(properties)
+                .build();
     }
 }
