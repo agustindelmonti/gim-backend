@@ -6,13 +6,12 @@ import gym.model.Role;
 import gym.model.User;
 import gym.repository.RoleRepository;
 import gym.repository.UserRepository;
-import gym.users.SuccessfulUserRegistrationEvent;
 import gym.utils.ApplicationException;
 import gym.utils.NotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,7 +28,6 @@ public class UserService implements IUserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
     public User getById(Long id) throws NotFoundException {
         return this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found"));
@@ -43,8 +41,8 @@ public class UserService implements IUserService, UserDetailsService {
         return userRepository.findAll();
     }
 
-    public Page<User> getAll(Pageable page) {
-        return userRepository.findAll(page);
+    public Page<User> getAll(Specification<User> specs, Pageable page) {
+        return userRepository.findAll(specs, page);
     }
 
     public List<User> searchByNameLike(String name) {
@@ -69,11 +67,7 @@ public class UserService implements IUserService, UserDetailsService {
 
         final Role role = roleRepository.findById(userDto.getRolId()).orElseThrow();
         user.getRoles().add(role);
-        user = userRepository.save(user);
-
-        applicationEventPublisher.publishEvent(new SuccessfulUserRegistrationEvent(this, user));
-
-        return user;
+        return userRepository.save(user);
     }
 
     @Override

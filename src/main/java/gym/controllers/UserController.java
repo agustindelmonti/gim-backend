@@ -5,9 +5,11 @@ import gym.dtos.UserPasswordDto;
 import gym.dtos.UserUpdateDto;
 import gym.model.User;
 import gym.services.UserService;
+import gym.users.SuccessfulUserRegistrationEvent;
 import gym.utils.ApplicationException;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController()
@@ -27,6 +30,7 @@ import java.util.List;
 @SecurityRequirement(name = "bearer")
 public class UserController {
     private final UserService userService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @GetMapping()
     public List<User> getUsers() {
@@ -34,8 +38,9 @@ public class UserController {
     }
 
     @GetMapping(headers = "X-API-VERSION=1")
-    public Page<User> getUsers(Pageable pageable) {
-        return userService.getAll(pageable);
+    public Page<User> getUsers(Optional<UserFilter> filter, Pageable pageable) {
+        UserSpecification spec = new UserSpecification(filter.orElse(null));
+        return userService.getAll(spec, pageable);
     }
 
     @GetMapping("/{id}")
@@ -60,6 +65,9 @@ public class UserController {
 
         URI uri = URI.create(
                 ServletUriComponentsBuilder.fromCurrentContextPath().path("api/users/" + user.getId()).toUriString());
+
+        applicationEventPublisher.publishEvent(new SuccessfulUserRegistrationEvent(this, user));
+
         return ResponseEntity.created(uri).body(user);
     }
 

@@ -13,7 +13,8 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
@@ -21,8 +22,10 @@ public class User implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private String name;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type", nullable = false)
+	private UserType type = UserType.MEMBER;
+
 	@Column(nullable = false, unique = true)
 	private String email;
 
@@ -30,8 +33,22 @@ public class User implements UserDetails {
 	@JsonIgnore()
 	private String password;
 
+	@Column(nullable = false)
+	private String name;
+
 	@Column(nullable = false, unique = true)
 	private String nroDoc;
+
+	private String gender;
+	private String phone;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "birthday")
+	private Date birthday;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@JoinColumn(name = "address_id")
+	private Address address;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<Role> roles = new ArrayList<>();

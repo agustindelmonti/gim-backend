@@ -25,8 +25,6 @@ public class UserCreateDto {
     @NonNull
     private Long rolId;
 
-    private Long routineId;
-
     public UserCreateDto(String email, String password, String nroDoc, String name, @NonNull Long rolId) {
         this.email = email;
         this.password = password;
