@@ -11,6 +11,7 @@ import gym.utils.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,8 +41,8 @@ public class UserService implements IUserService, UserDetailsService {
         return userRepository.findAll();
     }
 
-    public Page<User> getAll(Pageable page) {
-        return userRepository.findAll(page);
+    public Page<User> getAll(Specification<User> specs, Pageable page) {
+        return userRepository.findAll(specs, page);
     }
 
     public List<User> searchByNameLike(String name) {

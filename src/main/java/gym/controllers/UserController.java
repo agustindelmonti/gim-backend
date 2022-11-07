@@ -22,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController()
@@ -37,8 +38,9 @@ public class UserController {
     }
 
     @GetMapping(headers = "X-API-VERSION=1")
-    public Page<User> getUsers(Pageable pageable) {
-        return userService.getAll(pageable);
+    public Page<User> getUsers(Optional<UserFilter> filter, Pageable pageable) {
+        UserSpecification spec = new UserSpecification(filter.orElse(null));
+        return userService.getAll(spec, pageable);
     }
 
     @GetMapping("/{id}")

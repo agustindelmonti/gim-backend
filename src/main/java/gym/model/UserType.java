@@ -1,9 +1,11 @@
 package gym.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
+@AllArgsConstructor
 @ToString
 public enum UserType {
     MEMBER("member"),
@@ -11,7 +13,4 @@ public enum UserType {
 
     private final String type;
 
-    UserType(String type) {
-        this.type = type;
-    }
 }
