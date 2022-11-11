@@ -1,17 +1,94 @@
 <!DOCTYPE html>
-<html lang="ar" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:remove="all">Template for HTML email</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+    <meta content="width=device-width, initial-scale=1.0;" name="viewport"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <title>successful payment</title>
+    <link href="../static/styles/main.css" rel="stylesheet" th:href="@{/styles/main.css}"/>
 </head>
-<body>
-<p>
-    Hola, <span th:text="${name}">Peter Static</span>!
-</p>
-<p>
-    Recibimos correctamente tu pago de $
-    <!--/*@thymesVar id="amount" type="gym.model.Payment"*/-->
-    <span th:text="${amount}">2000</span>
-</p>
+
+<body marginheight="0" marginwidth="0">
+
+<div class="block">
+    <div style="border-spacing: 0; padding: 20px 6.25%"></div>
+
+    <div class="container">
+        <h1 class="header">
+            <span th:text="${name}">{{Name}}</span> recibimos correctamente tu pago de $
+            <!--/*@thymesVar id="amount" type="gym.model.Payment"*/-->
+            <span th:text="${amount}">{{amount}}</span>
+        </h1>
+
+        <div class="paragraph" style="color: #999999; font-weight: bold">
+            <!--/*@thymesVar id="payment_id" type="gym.model.Payment.id"*/-->
+            Numero de transaccion # <span th:text="${payment_id}">{{id}}</span>
+        </div>
+
+        <!-- List -->
+        <!--
+       <div style="border-collapse: collapse; border-spacing: 0; margin: 0; width: 87.5%; padding: 25px 6.25% 0;" class="line">
+           <hr color="#E0E0E0" size="1" noshade style="margin: 0; padding: 0; color: #E0E0E0; align-self: center; width: 100%" />
+       </div>
+       <div style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0 6.25%;" class="list-item">
+           <div align="center" border="0" cellspacing="0" cellpadding="0" style="width: inherit; margin: 0; padding: 0; border-collapse: collapse; border-spacing: 0;">
+                   <div style="display: inline-flex">
+                       <div style="border-collapse: collapse; border-spacing: 0; padding-top: 30px; padding-right: 20px;">
+                           <img style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block; color: #000000;"
+                                src="https://raw.githubusercontent.com/konsav/email-templates/master/images/list-item.png"
+                                alt="H"
+                                title="Highly compatible"
+                                width="50"
+                                height="50"
+                           />
+                       </div>
+
+                       <div align="left"
+                            style=" font-size: 17px; font-weight: 400; line-height: 160%; border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-top: 25px; color: #000000; font-family: sans-serif;"
+                            class="paragraph"
+                       >
+                           <b style="color: #333333;">Membresia</b><br />
+                           Tested on the most popular email clients for web, desktop and mobile. Checklist included.
+                       </div>
+                   </div>
+               </div>
+       </div>
+       -->
+
+        <div style="text-align: center; margin-block: 30px">
+            <!--/*@thymesVar id="url" type="String"*/-->
+            <a class="button"
+               lang="ar"
+               style="text-decoration: none; color: #ffffff; font-family: sans-serif; font-size: 17px; font-weight: 700; line-height: 120%;"
+               target="_blank"
+               th:href="${url}"
+            >
+                Acceder
+            </a>
+        </div>
+    </div>
+
+    <div class="container" style="width: 100%; margin-top: 30px; background-color: #FFECD1">
+        <div class="paragraph" style="text-align: center">
+            <h4 style="margin: 2px">Necesitas ayuda? Contactanos a </h4>
+            <!--/*@thymesVar id="url" type="String"*/-->
+            <a lang="ar" style="color: #127db3" target="_blank" th:ref="${url}">
+                {{support@ourteam.com}}
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="wrapper">
+        <div class="footer">
+            Si no estás interesado en seguir recibiendo mails -
+            <a href=""
+               style="text-decoration: underline; color: #999999; font-family: sans-serif; font-size: 13px; font-weight: bold; line-height: 150%;"
+               target="_blank">
+                unsubscribe
+            </a>
+        </div>
+    </footer>
+</div>
 </body>
 </html>

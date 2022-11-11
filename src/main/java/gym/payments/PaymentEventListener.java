@@ -30,6 +30,7 @@ public class PaymentEventListener {
         properties.put("name", payment.getUser().getName());
         properties.put("paymentDatetime", payment.getPaymentDate().toString());
         properties.put("amount", payment.getAmount());
+        properties.put("payment_id", payment.getId());
 
         return Email.builder()
                 .to(payment.getUser().getEmail())
