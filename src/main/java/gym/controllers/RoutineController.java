@@ -31,8 +31,9 @@ public class RoutineController {
     }
 
     @GetMapping
-    public List<Routine> getRoutines() {
-        return routineService.getRoutines();
+    public List<RoutineDetailDto> getRoutines() {
+        List<Routine> routines = routineService.getRoutines();
+        return routines.stream().map(RoutineDetailDto::new).toList();
     }
 
     @GetMapping(params = "member")
