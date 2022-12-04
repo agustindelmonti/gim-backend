@@ -93,7 +93,7 @@ public class UserController {
     /**
      * Changes the current user password
      */
-    @PutMapping("/updatePassword")
+    @PutMapping("/update-password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> changePassword(
             @Valid @RequestBody UserPasswordDto changePasswordDto,
