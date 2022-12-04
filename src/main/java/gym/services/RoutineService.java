@@ -53,6 +53,8 @@ public class RoutineService {
     public Routine update(Long id, RoutineDto routineDto) {
         Routine r = this.getById(id);
 
+        final User user = userRepository.findById(routineDto.getUserId()).orElseThrow(() -> new NotFoundException("User not found"));
+        r.setMember(user);
         r.getRoutineExercises().clear();
         return parseExercisesSet(routineDto, r);
     }

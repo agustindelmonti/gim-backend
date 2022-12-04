@@ -17,22 +17,21 @@ import javax.validation.constraints.NotNull;
 public class RoutineExerciseDto {
     @NotNull
     public Long exerciseId;
-
     @Min(1)
     @Max(7)
     private int day;
-
     @Min(1)
     private int sets;
-
     @Min(1)
     private int reps;
+    private String name;
 
     public RoutineExerciseDto(RoutineExercise r) {
         this.exerciseId = r.getExercise().getId();
         this.day = r.getDay();
         this.sets = r.getSets();
         this.reps = r.getReps();
+        this.name = r.getExercise().getName();
     }
 
     public RoutineExercise toRoutineExercise(Exercise exercise, Routine routine) {

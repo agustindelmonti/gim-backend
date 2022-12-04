@@ -6,6 +6,7 @@ import gym.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,7 +24,7 @@ public class UsersSeeder implements CommandLineRunner {
 
         try {
             userService.loadUserByUsername(adminEmail);
-        } catch (Exception exception) {
+        } catch (UsernameNotFoundException e) {
             userService.createUser(new UserCreateDto(adminEmail, adminPassword, adminDni, adminName, Role.ADMIN_ID));
         }
     }
