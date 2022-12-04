@@ -6,7 +6,6 @@ import gym.model.User;
 import gym.repository.PaymentRepository;
 import gym.utils.NotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +17,6 @@ import java.util.UUID;
 public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final UserService userService;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
     public Payment findById(UUID paymentId) {
         return paymentRepository.findById(paymentId).orElseThrow(() -> new NotFoundException("Payment not found"));

@@ -1,5 +1,6 @@
 package gym.controllers;
 
+import gym.dtos.MemberAccessStatusDto;
 import gym.dtos.UserCreateDto;
 import gym.dtos.UserPasswordDto;
 import gym.dtos.UserUpdateDto;
@@ -49,8 +50,9 @@ public class UserController {
     }
 
     @GetMapping("/nro-doc/{nroDoc}")
-    public User getByNroDoc(@PathVariable String nroDoc) {
-        return userService.getByNroDoc(nroDoc);
+    public MemberAccessStatusDto getByNroDoc(@PathVariable String nroDoc) {
+        final User user = userService.getByNroDoc(nroDoc);
+        return new MemberAccessStatusDto(user);
     }
 
     @GetMapping("/me")
