@@ -110,6 +110,6 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     public boolean checkIfValidOldPassword(final User user, final String oldPassword) {
-        return passwordEncoder.matches(oldPassword, user.getPassword());
+        return passwordEncoder.matches(user.getPassword(), oldPassword);
     }
 }

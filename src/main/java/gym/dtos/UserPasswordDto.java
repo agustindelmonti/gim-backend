@@ -13,10 +13,10 @@ public class UserPasswordDto {
     private String newPassword;
 
     @NotBlank
-    private String repeatNewPassword;
+    private String confirmPassword;
 
     public boolean checkPasswordsMatch() {
-        return newPassword.equals(repeatNewPassword);
+        return newPassword.equals(confirmPassword);
     }
 
 }
