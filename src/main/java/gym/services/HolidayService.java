@@ -4,7 +4,11 @@ import gym.model.Holiday;
 import gym.repository.HolidayRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class HolidayService {
@@ -22,7 +26,7 @@ public class HolidayService {
     public List<Holiday> getHolidays() {
         return holidayRepository.findAll();
     }
-    
+
     public Holiday save(Holiday holiday) {
         return holidayRepository.save(holiday);
     }
@@ -36,5 +40,14 @@ public class HolidayService {
 
     public void deleteHoliday(Long id) {
         holidayRepository.deleteById(id);
+    }
+
+    public List<Holiday> getHolidaysByDateRange(LocalDate startDate, LocalDate endDate) {
+        return holidayRepository.findAllByDateBetween(startDate, endDate);
+    }
+
+    public Map<LocalDate, Holiday> getHolidayCalendarByDateRange(LocalDate startDate, LocalDate endDate) {
+        return getHolidaysByDateRange(startDate, endDate).stream().collect(
+                Collectors.toMap(Holiday::getDate, Function.identity()));
     }
 }
