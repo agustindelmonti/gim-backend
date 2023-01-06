@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Exception reserved for application domain errors
  */
 @Log4j2
-@ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 public class ApplicationException extends RuntimeException {
 
     public ApplicationException(String message, Throwable e) {
