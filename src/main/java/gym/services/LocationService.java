@@ -36,12 +36,11 @@ class CalendarDay {
     }
 }
 
-
 @Service
 public class LocationService {
     private final LocationRepository locationRepository;
     private final HolidayService holidayService;
-    private BusinessHoursRepository businessHoursRepository;
+    private final BusinessHoursRepository businessHoursRepository;
 
     public LocationService(LocationRepository locationRepository, HolidayService holidayService, BusinessHoursRepository businessHoursRepository) {
         this.locationRepository = locationRepository;

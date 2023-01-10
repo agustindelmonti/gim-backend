@@ -20,6 +20,10 @@ public class BusinessHoursService {
         return businessHoursRepository.findAll();
     }
 
+    public List<BusinessHours> findByLocationId(Long id) {
+        return businessHoursRepository.findByLocationId(id);
+    }
+    
     public List<BusinessHours> findByLocationIdAndDay(Long locationId, int day) {
         return businessHoursRepository.findByLocationIdAndDay(locationId, day);
     }
@@ -39,5 +43,4 @@ public class BusinessHoursService {
     public void deleteAllByLocationIdAndDay(Long locationId, String day) {
         businessHoursRepository.deleteAllByLocationIdAndDay(locationId, day);
     }
-
 }

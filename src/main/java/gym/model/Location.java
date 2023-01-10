@@ -1,5 +1,6 @@
 package gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +26,7 @@ public class Location {
     @Column(name = "phone", nullable = false)
     private String phone;
 
+    @JsonIgnore()
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Set<BusinessHours> businessHours = new LinkedHashSet<>();

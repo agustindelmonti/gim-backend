@@ -1,5 +1,6 @@
 package gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ public class BusinessHours {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @JsonIgnore()
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
