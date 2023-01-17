@@ -18,7 +18,7 @@ public class HolidayController {
     public HolidayController(HolidayService holidayService) {
         this.holidayService = holidayService;
     }
-    
+
     @GetMapping
     public List<Holiday> getHolidays() {
         return holidayService.getHolidays();
@@ -30,7 +30,7 @@ public class HolidayController {
     }
 
     @PostMapping()
-    public Holiday createHoliday(Holiday holiday) {
+    public Holiday createHoliday(@RequestBody Holiday holiday) {
         return holidayService.save(holiday);
     }
 
