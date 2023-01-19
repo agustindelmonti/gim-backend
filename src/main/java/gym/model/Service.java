@@ -1,5 +1,6 @@
 package gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,7 @@ public class Service {
     @JoinTable(name = "package_services",
             joinColumns = @JoinColumn(name = "service_id"),
             inverseJoinColumns = @JoinColumn(name = "package_id"))
+    @JsonIgnore
     private List<Package> packages = new ArrayList<>();
 
     @Column(name = "created_at")
