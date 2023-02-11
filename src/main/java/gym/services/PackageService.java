@@ -1,7 +1,10 @@
 package gym.services;
 
+import gym.dtos.PackageUserDto;
 import gym.model.Package;
+import gym.model.User;
 import gym.repository.PackageRepository;
+import gym.repository.PackageUserRepository;
 import gym.utils.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,10 +14,12 @@ import java.util.List;
 @Service
 public class PackageService {
     private final PackageRepository packageRepository;
+    private final PackageUserRepository packageUserRepository;
     private final ServiceService serviceService;
 
-    public PackageService(PackageRepository packageRepository, ServiceService serviceService) {
+    public PackageService(PackageRepository packageRepository, PackageUserRepository packageUserRepository, ServiceService serviceService) {
         this.packageRepository = packageRepository;
+        this.packageUserRepository = packageUserRepository;
         this.serviceService = serviceService;
     }
 
@@ -68,5 +73,10 @@ public class PackageService {
         packageToUpdate.getServices().addAll(services);
 
         return packageRepository.save(packageToUpdate);
+    }
+
+    public List<PackageUserDto> findAllByUser(User user) {
+        final var packages = packageUserRepository.findAllByUser(user);
+        return packages.stream().map(PackageUserDto::new).toList();
     }
 }

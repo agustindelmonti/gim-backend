@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface PackageRepository extends JpaRepository<Package, Long> {
     List<Package> findAllByActive(boolean b);
-
-
 }

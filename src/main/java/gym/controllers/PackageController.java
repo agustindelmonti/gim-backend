@@ -1,8 +1,11 @@
 package gym.controllers;
 
+import gym.dtos.PackageUserDto;
 import gym.model.Package;
+import gym.model.User;
 import gym.services.PackageService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +34,11 @@ public class PackageController {
     @GetMapping("/active")
     public List<Package> getActivePackages() {
         return packageService.findAllActive();
+    }
+
+    @GetMapping("/my-packages")
+    public List<PackageUserDto> getMyPackages(@AuthenticationPrincipal User user) {
+        return packageService.findAllByUser(user);
     }
 
     @PostMapping()

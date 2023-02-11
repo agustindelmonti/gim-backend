@@ -18,71 +18,75 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "type", nullable = false)
-	private UserType type = UserType.MEMBER;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private UserType type = UserType.MEMBER;
 
-	@Column(nullable = false, unique = true)
-	private String email;
+    @Column(nullable = false, unique = true)
+    private String email;
 
-	@Column(nullable = false)
-	@JsonIgnore()
-	private String password;
+    @Column(nullable = false)
+    @JsonIgnore()
+    private String password;
 
-	@Column(nullable = false)
-	private String name;
+    @Column(nullable = false)
+    private String name;
 
-	@Column(nullable = false, unique = true)
-	private String nroDoc;
+    @Column(nullable = false, unique = true)
+    private String nroDoc;
 
-	private String gender;
-	private String phone;
+    private String gender;
+    private String phone;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "birthday")
-	private Date birthday;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "birthday")
+    private Date birthday;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-	@JoinColumn(name = "address_id")
-	private Address address;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	private Collection<Role> roles = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Role> roles = new ArrayList<>();
 
-	@Column(nullable = false)
-	private boolean enabled;
-	private boolean credentialsNonExpired;
-	private boolean accountNonExpired;
-	private boolean accountNonLocked;
+    @Column(nullable = false)
+    private boolean enabled;
+    private boolean credentialsNonExpired;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
 
-	/**
-	 * Routines assigned to user by other responsible user with admin or employee roles
-	 */
-	@OneToMany(mappedBy = "member", orphanRemoval = true, fetch = FetchType.LAZY)
-	private Set<Routine> assignedRoutines = new LinkedHashSet<>();
+    /**
+     * Routines assigned to user by other responsible user with admin or employee roles
+     */
+    @OneToMany(mappedBy = "member", orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Routine> assignedRoutines = new LinkedHashSet<>();
 
-	/**
-	 * Routines created by the user
-	 * only users with admin or employees roles should have elements
-	 */
-	@OneToMany(mappedBy = "creator", orphanRemoval = true)
-	private Set<Routine> createdRoutines = new LinkedHashSet<>();
+    /**
+     * Routines created by the user
+     * only users with admin or employees roles should have elements
+     */
+    @OneToMany(mappedBy = "creator", orphanRemoval = true)
+    private Set<Routine> createdRoutines = new LinkedHashSet<>();
 
-	@OneToMany(mappedBy = "user", orphanRemoval = true)
-	@OrderBy("paymentDate DESC")
-	private List<Payment> payments = new ArrayList<>();
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OrderBy("paymentDate DESC")
+    private List<Payment> payments = new ArrayList<>();
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).toList();
-	}
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private Set<PackageUser> packages = new LinkedHashSet<>();
 
-	@Override
-	public String getUsername() {
-		return email;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).toList();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }

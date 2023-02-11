@@ -1,5 +1,6 @@
 package gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "packages")
@@ -45,12 +48,9 @@ public class Package {
             inverseJoinColumns = @JoinColumn(name = "service_id"))
     private List<Service> services;
 
-    @ManyToMany
-    @JoinTable(
-            name = "package_users",
-            joinColumns = @JoinColumn(name = "package_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users;
+    @JsonIgnore
+    @OneToMany(mappedBy = "pack", orphanRemoval = true)
+    private Set<PackageUser> packages = new LinkedHashSet<>();
 
     @Column(name = "created_at")
     @CreationTimestamp
