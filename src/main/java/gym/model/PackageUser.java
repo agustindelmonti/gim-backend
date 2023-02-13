@@ -2,6 +2,7 @@ package gym.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -22,7 +23,7 @@ public class PackageUser {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "package_id", nullable = false)
     private Package pack;
 
@@ -42,6 +43,9 @@ public class PackageUser {
 
     @Transient
     private PackageStatus status;
+
+    @Formula("(CASE WHEN end_date IS NULL THEN -1 ELSE DATEDIFF(end_date, start_date) END)")
+    private int daysLeft;
 
     @PostLoad
     public void postLoad() {

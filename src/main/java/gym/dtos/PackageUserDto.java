@@ -22,6 +22,7 @@ public class PackageUserDto implements Serializable {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String status;
+    private int daysLeft;
 
     public PackageUserDto(PackageUser packageUser) {
         this.id = packageUser.getId();
@@ -37,5 +38,6 @@ public class PackageUserDto implements Serializable {
         this.startDate = packageUser.getStartDate();
         this.endDate = packageUser.getEndDate();
         this.status = packageUser.getStatus().toString();
+        this.daysLeft = packageUser.getDaysLeft();
     }
 }
