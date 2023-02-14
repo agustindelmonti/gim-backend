@@ -1,18 +1,65 @@
-<!DOCTYPE html>
-<html lang="ar" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title th:remove="all">Template for HTML email</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+    <meta content="width=device-width, initial-scale=1.0;" name="viewport"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <title>Bienvenido</title>
+    <link href="../static/styles/main.css" rel="stylesheet" th:href="@{/styles/main.css}"/>
 </head>
-<body>
-<h4>
-    Bienvenido al gimnasio
-    <span th:text="${name}">Peter Static</span>!
-</h4>
-<p>
-    Ahora podes acceder a todos los servicios de nuestro gimnasio accediendo a nuestra pagina
-    <!--/*@thymesVar id="url" type="String"*/-->
-    <a lang="ar" th:ref="${url}">localhost:8080</a>
-</p>
+
+<body marginheight="0" marginwidth="0">
+
+<div class="block">
+    <div style="border-spacing: 0; padding: 20px 6.25%"></div>
+
+    <div class="container">
+        <h1 class="header">
+            Bienvenido <span th:text="${name}">{{Name}}</span>!
+        </h1>
+
+        <div class="subheader">
+            Gracias por sumarte a nuestra comunidad
+        </div>
+
+        <div class="paragraph" style="text-align: center">
+            Ahora podes acceder a todos los servicios de nuestro gimnasio accediendo a nuestra pagina
+        </div>
+
+
+        <div style="text-align: center; margin-bottom: 30px">
+            <!--/*@thymesVar id="url" type="String"*/-->
+            <a class="button"
+               lang="ar"
+               style="text-decoration: none; color: #ffffff; font-family: sans-serif; font-size: 17px; font-weight: 700; line-height: 120%;"
+               target="_blank"
+               th:href="${url}"
+            >
+                Confirmar mail
+            </a>
+        </div>
+    </div>
+
+    <div class="container" style="width: 100%; margin-top: 30px; background-color: #FFECD1">
+        <div class="paragraph" style="text-align: center">
+            <h4 style="margin: 2px">Necesitas ayuda? Contactanos a </h4>
+            <!--/*@thymesVar id="url" type="String"*/-->
+            <a lang="ar" style="color: #127db3" target="_blank" th:ref="${url}">
+                {{support@ourteam.com}}
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="wrapper">
+        <div class="footer">
+            Si no estás interesado en seguir recibiendo mails -
+            <a href=""
+               style="text-decoration: underline; color: #999999; font-family: sans-serif; font-size: 13px; font-weight: bold; line-height: 150%;"
+               target="_blank">
+                unsubscribe
+            </a>
+        </div>
+    </footer>
+</div>
 </body>
 </html>
