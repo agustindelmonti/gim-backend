@@ -47,6 +47,13 @@ public class Service {
     @JsonIgnore
     private List<Package> packages = new ArrayList<>();
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(name = "locations_services",
+            joinColumns = @JoinColumn(name = "service_id"),
+            inverseJoinColumns = @JoinColumn(name = "location_id"))
+    @JsonIgnore
+    private List<Location> locations = new ArrayList<>();
+
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -54,5 +61,6 @@ public class Service {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
 
 }

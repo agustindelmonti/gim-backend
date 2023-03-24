@@ -5,6 +5,7 @@ import gym.model.Holiday;
 import gym.model.Location;
 import gym.repository.BusinessHoursRepository;
 import gym.repository.LocationRepository;
+import gym.repository.ServiceRepository;
 import gym.utils.NotFoundException;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,10 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 // Represents a day on the calendar with a specific set of opening and closing times
 @Getter
@@ -41,11 +39,13 @@ public class LocationService {
     private final LocationRepository locationRepository;
     private final HolidayService holidayService;
     private final BusinessHoursRepository businessHoursRepository;
+    private final ServiceRepository serviceRepository;
 
-    public LocationService(LocationRepository locationRepository, HolidayService holidayService, BusinessHoursRepository businessHoursRepository) {
+    public LocationService(LocationRepository locationRepository, HolidayService holidayService, BusinessHoursRepository businessHoursRepository, ServiceRepository serviceRepository) {
         this.locationRepository = locationRepository;
         this.holidayService = holidayService;
         this.businessHoursRepository = businessHoursRepository;
+        this.serviceRepository = serviceRepository;
     }
 
     public Location getLocationById(Long id) {
@@ -111,4 +111,17 @@ public class LocationService {
         }
         return calendar;
     }
+
+    /**************
+     * Services  *
+     **************/
+    
+    public void bulkUpdateServicesForLocation(Location location, List<Long> services) {
+        location.getServices().clear();
+        var s = new HashSet<>(serviceRepository.findAllById(services));
+        location.setServices(s);
+        locationRepository.saveAndFlush(location);
+    }
+
+
 }

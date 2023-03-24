@@ -6,6 +6,7 @@ import gym.model.Location;
 import gym.repository.BusinessHoursRepository;
 import gym.repository.HolidayRepository;
 import gym.repository.LocationRepository;
+import gym.repository.ServiceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,12 @@ class LocationServiceTest {
     @Autowired
     private HolidayRepository holidayRepository;
     private LocationService locationService;
+    private ServiceRepository serviceRepository;
 
     @BeforeEach
     void setUp() {
         HolidayService holidayService = new HolidayService(holidayRepository);
-        locationService = new LocationService(locationRepository, holidayService, businessHoursRepository);
+        locationService = new LocationService(locationRepository, holidayService, businessHoursRepository, serviceRepository);
     }
 
     @Test

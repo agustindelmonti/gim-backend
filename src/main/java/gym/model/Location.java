@@ -28,7 +28,12 @@ public class Location {
 
     @JsonIgnore()
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
+    @JoinColumn(name = "id")
     private Set<BusinessHours> businessHours = new LinkedHashSet<>();
+
+    @JsonIgnore()
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "id")
+    private Set<Service> services = new LinkedHashSet<>();
 
 }

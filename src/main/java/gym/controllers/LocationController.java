@@ -4,12 +4,14 @@ import gym.dtos.BusinessHoursDto;
 import gym.dtos.UpdateBusinessHoursDto;
 import gym.model.BusinessHours;
 import gym.model.Location;
+import gym.model.Service;
 import gym.services.BusinessHoursService;
 import gym.services.LocationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController()
@@ -67,7 +69,6 @@ public class LocationController {
      *
      * @param id            - location id
      * @param businessHours - list of business hours for location
-     * @return
      */
     @PutMapping("/{id}/business-hours")
     public List<BusinessHours> setBusinessHoursForLocation(
@@ -82,4 +83,29 @@ public class LocationController {
         return businessHoursService.findByLocationId(id);
     }
 
+
+    /*****************
+     * SERVICES
+     * ***************/
+
+    @GetMapping("/{id}/services")
+    public Set<Service> getServicesForLocation(@PathVariable("id") Long id) {
+        final Location location = locationService.getLocationById(id);
+        return location.getServices();
+    }
+
+    /**
+     * bulk edit services for location
+     *
+     * @param id       - location id
+     * @param services - list of services for location
+     */
+    @PutMapping("/{id}/services")
+    public void setServicesForLocation(
+            @PathVariable("id") Long id,
+            @RequestBody List<Long> services) {
+        final Location location = locationService.getLocationById(id);
+
+        locationService.bulkUpdateServicesForLocation(location, services);
+    }
 }
