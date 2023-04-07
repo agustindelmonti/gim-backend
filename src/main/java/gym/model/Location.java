@@ -36,4 +36,8 @@ public class Location {
     @JoinColumn(name = "id")
     private Set<Service> services = new LinkedHashSet<>();
 
+    @JsonIgnore()
+    @OneToMany(mappedBy = "location", orphanRemoval = true)
+    private Set<Schedule> schedules = new LinkedHashSet<>();
+
 }
