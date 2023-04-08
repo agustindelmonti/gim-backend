@@ -115,13 +115,11 @@ public class LocationService {
     /**************
      * Services  *
      **************/
-    
+
     public void bulkUpdateServicesForLocation(Location location, List<Long> services) {
         location.getServices().clear();
         var s = new HashSet<>(serviceRepository.findAllById(services));
         location.setServices(s);
         locationRepository.saveAndFlush(location);
     }
-
-
 }

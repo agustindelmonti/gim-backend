@@ -55,4 +55,8 @@ public class ScheduleService {
     public List<Schedule> findByLocationId(Long id) {
         return scheduleRepository.findByLocationId(id);
     }
+
+    public List<Schedule> findByServiceId(Long id) {
+        return scheduleRepository.findByServiceId(id);
+    }
 }

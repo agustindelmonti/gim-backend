@@ -49,4 +49,9 @@ public class ScheduleController {
         return scheduleService.findByLocationId(id).stream().map(ScheduleDto::new).collect(Collectors.toList());
     }
 
+    @GetMapping("/service/{id}")
+    public List<ScheduleDto> getSchedulesByServiceId(@PathVariable("id") Long id) {
+        return scheduleService.findByServiceId(id).stream().map(ScheduleDto::new).collect(Collectors.toList());
+    }
+
 }

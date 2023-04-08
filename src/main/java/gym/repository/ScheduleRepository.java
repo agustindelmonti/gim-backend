@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findByLocationId(Long id);
+
+    List<Schedule> findByServiceId(Long id);
 }
